@@ -1,7 +1,7 @@
 {
-  "name": "golang-base-project",
+  "name": "tournify",
   "version": "1.0.0",
-  "description": "A base project with a Golang backend ready to handle user authentication.",
+  "description": "A web application which makes it easy to create tournaments.",
   "main": "index.js",
   "private": true,
   "scripts": {

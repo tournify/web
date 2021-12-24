@@ -5,25 +5,25 @@ services:
       - db_data:/var/lib/mysql
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: base_project
-      MYSQL_DATABASE: base_project
-      MYSQL_USER: base_project
-      MYSQL_PASSWORD: base_project
+      MYSQL_ROOT_PASSWORD: tournify
+      MYSQL_DATABASE: tournify
+      MYSQL_USER: tournify
+      MYSQL_PASSWORD: tournify
     ports:
       - "3306:3306"
-  golang-base-project:
+  tournify:
     build: .
-    container_name: golang-base-project
+    container_name: tournify
     environment:
       - PORT=:80
       - BASE_URL=http://localhost:8080
       - COOKIE_SECRET=
       - DATABASE=mysql
-      - DATABASE_NAME=base_project
+      - DATABASE_NAME=tournify
       - DATABASE_HOST=db
       - DATABASE_PORT=3306
-      - DATABASE_USERNAME=base_project
-      - DATABASE_PASSWORD=base_project
+      - DATABASE_USERNAME=tournify
+      - DATABASE_PASSWORD=tournify
       - SMTP_USERNAME=
       - SMTP_PASSWORD=
       - SMTP_HOST=

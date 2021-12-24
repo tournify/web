@@ -1,4 +1,4 @@
-module github.com/uberswe/golang-base-project
+module github.com/tournify/web
 
 go 1.16
 

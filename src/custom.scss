@@ -1,3 +1,10 @@
+$dark: #247B31 !default;
+$dark-text: #212529;
+$light: #f8f9fa !default;
+$gradient-dark: #8ec64e;
+$gradient-light: #41aba0;
+$success: #8ec64e !default;
+
 main > .container {
   padding: 60px 15px 0;
 }
@@ -13,7 +20,7 @@ main > .container {
   font-weight: 400;
 }
 
-.form-signin .form-floating:focus-within {
+.form-floating:focus-within {
   z-index: 2;
 }
 
@@ -41,4 +48,77 @@ main > .container {
     .bd-placeholder-img-lg {
         font-size: 3.5rem;
     }
+}
+
+.welcome {
+    background: -moz-linear-gradient(-45deg,$gradient-dark 0,$gradient-light 100%);
+    background: -webkit-gradient(linear,left top,right bottom,color-stop(0,$gradient-dark),color-stop(100%,$gradient-light));
+    background: -webkit-linear-gradient(-45deg,$gradient-dark 0,$gradient-light 100%);
+    background: -o-linear-gradient(-45deg,$gradient-dark 0,$gradient-light 100%);
+    background: -ms-linear-gradient(-45deg,$gradient-dark 0,$gradient-light 100%);
+    background: linear-gradient(135deg,$gradient-dark 0,$gradient-light 100%);
+    padding: 250px 0 161px;
+    font-weight: 300;
+}
+
+.create-tournament-form {
+  color: $light;
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: auto;
+  text-anchor: middle;
+  text-align:center;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  transform-origin: center center;
+  -moz-transform-origin: center center;
+  -webkit-transform-origin: center center;
+  -o-transform-origin: center center;
+  -ms-transform-origin: center center;
+}
+
+.create-tournament-form input {
+    color: $dark-text;
+}
+
+.create-tournament-form label {
+    color: $dark-text;
+}
+
+.create-tournament-form h2 {
+    font-size: 3.6em;
+    font-weight: 100;
+}
+
+.create-tournament-form p {
+    font-size: 1.4em;
+    font-weight: 100;
+}
+
+.create-tournament-form h2 span {
+    font-weight: 700;
+}
+
+.btn-outline-light {
+    color: $light;
+    border-color: $light;
+}
+
+.btn-outline-light button:hover {
+    color: $light;
+    background-color: $success;
+    border-color: $light;
+}
+
+.tournament-create-button {
+    padding-top: 10px;
+}
+
+.subscribe-form {
+  width: 100%;
+  max-width: 530px;
+  padding: 15px;
+  margin: auto;
 }

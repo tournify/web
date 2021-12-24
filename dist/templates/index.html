@@ -1,10 +1,34 @@
 {{ template "header.html" . }}
 
 <main class="flex-shrink-0">
+    <article class="welcome" id="welcome">
+        <div class="create-tournament-form">
+        <h2><span>Tournify</span>.io</h2>
+        <p>Easy to create tournaments</p>
+
+        <form method="post" action="/tournament/create">
+            <div class="form-floating">
+                <input type="text" name="tourname" id="floatingTournamentName" class="form-control">
+                <label for="floatingTournamentName">Tournament name (optional)</label>
+            </div>
+            <div class="tournament-create-button">
+                <button type="submit" class="w-100 btn btn-lg btn-outline-light">Create</button>
+            </div>
+        </form>
+        </div>
+    </article>
     <div class="container">
-        <h1 class="mt-5">Golang Base Project</h1>
-        <p class="lead">A simple website with user login and registration. The frontend uses <a href="https://getbootstrap.com/docs/5.0/getting-started/introduction/">Bootstrap 5</a> and the backend is written in <a href="https://go.dev/">Go</a>.</p>
-        <p>Read more about this project on <a href="https://github.com/uberswe/golang-base-project">GitHub</a>.</p>
+        <div class="subscribe-form">
+        <h3 class="mb-3 mt-5">Subscribe to our newsletter</h3>
+        <div class="subscribe-form">
+            <form method="post" action="/subscribe" class="d-flex">
+            <input id="email" type="text" name="email" class="form-control" placeholder="Email">
+            <button type="submit" class="btn btn-lg btn-primary">Subscribe</button>
+            </form>
+        </div>
+        <p class="lead mb-3 mt-3">If you want to receive updates from us just pop your email in the box. We think that spam is for
+            jerks. And jerks we are not.</p>
+        </div>
     </div>
 </main>
 

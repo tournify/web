@@ -1,12 +1,12 @@
-package baseproject
+package web
 
 import (
 	"embed"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
-	"github.com/uberswe/golang-base-project/middleware"
-	"github.com/uberswe/golang-base-project/routes"
+	"github.com/tournify/web/middleware"
+	"github.com/tournify/web/routes"
 	"html/template"
 	"io/fs"
 	"log"
@@ -43,7 +43,7 @@ func Run() {
 	r := gin.Default()
 
 	store := cookie.NewStore([]byte(conf.CookieSecret))
-	r.Use(sessions.Sessions("golang_base_project_session", store))
+	r.Use(sessions.Sessions("tournify_session", store))
 
 	r.SetHTMLTemplate(t)
 
@@ -65,6 +65,18 @@ func Run() {
 	r.GET("/", controller.Index)
 	r.GET("/search", controller.Search)
 	r.POST("/search", controller.Search)
+	r.GET("/terms-of-service", controller.TermsOfService)
+	r.GET("/privacy-policy", controller.PrivacyPolicy)
+	r.GET("/tournament/create", controller.TournamentCreate)
+	r.POST("/tournament/create", controller.TournamentCreatePost)
+	r.GET("/tournament/:slug", controller.TournamentView)
+	r.POST("/tournament/:slug", controller.TournamentViewPost)
+	r.GET("/tournament/:slug/game/:gameslug", controller.TournamentGameView)
+	r.POST("/tournament/:slug/game/:gameslug", controller.TournamentGameViewPost)
+	r.GET("/blog", controller.BlogView)
+	r.GET("/blog/:slug", controller.BlogViewPage)
+	r.POST("/subscribe", controller.SubscribePost)
+
 	r.NoRoute(controller.NoRoute)
 
 	noAuth := r.Group("/")
@@ -91,8 +103,9 @@ func Run() {
 	admin.Use(middleware.Sensitive())
 
 	admin.GET("/admin", controller.Admin)
-	// We need to handle post from the login redirect
 	admin.POST("/admin", controller.Admin)
+	admin.GET("/blog/create", controller.BlogCreate)
+	admin.POST("/blog/create", controller.BlogCreatePost)
 	admin.GET("/logout", controller.Logout)
 
 	err = r.Run(conf.Port)

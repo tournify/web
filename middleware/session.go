@@ -3,7 +3,7 @@ package middleware
 import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
-	"github.com/uberswe/golang-base-project/models"
+	"github.com/tournify/web/models"
 	"gorm.io/gorm"
 	"log"
 )

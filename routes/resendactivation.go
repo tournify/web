@@ -2,7 +2,7 @@ package routes
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/uberswe/golang-base-project/models"
+	"github.com/tournify/web/models"
 	"log"
 	"net/http"
 )

@@ -3,8 +3,8 @@ package routes
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/uberswe/golang-base-project/config"
-	"github.com/uberswe/golang-base-project/middleware"
+	"github.com/tournify/web/config"
+	"github.com/tournify/web/middleware"
 	"gorm.io/gorm"
 )
 

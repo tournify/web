@@ -3,9 +3,9 @@ package routes
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	email2 "github.com/uberswe/golang-base-project/email"
-	"github.com/uberswe/golang-base-project/models"
-	"github.com/uberswe/golang-base-project/util"
+	email2 "github.com/tournify/web/email"
+	"github.com/tournify/web/models"
+	"github.com/tournify/web/util"
 	"gorm.io/gorm"
 	"log"
 	"net/http"

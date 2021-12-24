@@ -4,8 +4,8 @@ package email
 import (
 	"bytes"
 	"fmt"
-	"github.com/uberswe/golang-base-project/config"
-	"github.com/uberswe/golang-base-project/util"
+	"github.com/tournify/web/config"
+	"github.com/tournify/web/util"
 	"log"
 	"mime/multipart"
 	"net/smtp"

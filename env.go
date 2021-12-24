@@ -1,9 +1,9 @@
-package baseproject
+package web
 
 import (
 	"github.com/gorilla/securecookie"
-	"github.com/uberswe/golang-base-project/config"
-	"github.com/uberswe/golang-base-project/util"
+	"github.com/tournify/web/config"
+	"github.com/tournify/web/util"
 	"log"
 	"os"
 	"strconv"

@@ -3,14 +3,14 @@ package routes
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/uberswe/golang-base-project/models"
+	"github.com/tournify/web/models"
 	"log"
 	"net/http"
 )
 
 type SearchData struct {
 	PageData
-	Results []models.Website
+	Results []models.Tournament
 }
 
 func (controller Controller) Search(c *gin.Context) {
@@ -23,13 +23,13 @@ func (controller Controller) Search(c *gin.Context) {
 	}
 	search := c.PostForm("search")
 
-	var results []models.Website
+	var results []models.Tournament
 
 	log.Println(search)
 	search = fmt.Sprintf("%s%s%s", "%", search, "%")
 
 	log.Println(search)
-	res := controller.db.Where("title LIKE ? OR description LIKE ?", search, search).Find(&results)
+	res := controller.db.Where("privacy = ? AND (name LIKE ? OR description LIKE ?)", models.TournamentPrivacyPublic, search, search).Find(&results)
 
 	if res.Error != nil || len(results) == 0 {
 		pd.Messages = append(pd.Messages, Message{

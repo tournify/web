@@ -1,0 +1,113 @@
+{{ template "header.html" . }}
+
+<main class="flex-shrink-0">
+    <div class="container">
+        <form method="post" action="/tournament/create">
+            <div class="row">
+                <div class="col-sm">
+                    <label for="tourtype">Type</label>
+
+                    <div class="input-group">
+                        <select name="tourtype" id="tourtype">
+                            <option value="0" SELECTED>Group/Series</option>
+                            <option value="1">Elimination</option>
+                        </select>
+                    </div>
+
+                    <label for="tourname">Name</label>
+
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="tourname" name="tourname"
+                               value="{{ .TournamentName }}">
+                    </div>
+                    <label for="teamcount">Number of teams</label>
+
+                    <div class="input-group spinner">
+                        <input type="number" class="form-control" id="teamcount" name="teamcount" value="8">
+                    </div>
+                    <div id="extragroup">
+                        <label for="groupcount">Number of groups</label>
+
+                        <div class="input-group spinner">
+                            <input type="number" class="form-control" id="groupcount" name="groupcount" value="2">
+                        </div>
+                        <label for="meetcount">Number of meets</label>
+
+                        <div class="input-group spinner">
+                            <input type="number" class="form-control" id="meetcount" name="meetcount" value="1">
+                        </div>
+                        <label for="elimcount">How many teams are eliminated from each group?</label>
+
+                        <div class="input-group spinner">
+                            <input type="number" class="form-control" id="elimcount" name="elimcount" value="2">
+                        </div>
+
+                        <span><a id="advlnk" href="#">Advanced</a></span>
+                        <div id="advanced" style="display: none;">
+
+                            <label for="winpoints">Points for winning</label>
+                            <div class="input-group spinner">
+                                <input type="number" class="form-control" id="winpoints" name="winpoints" value="3">
+                            </div>
+
+                            <label for="tiepoints">Points for a draw</label>
+                            <div class="input-group spinner">
+                                <input type="number" class="form-control" id="tiepoints" name="tiepoints" value="1">
+                            </div>
+
+                            <label for="losspoints">Points for losing</label>
+                            <div class="input-group spinner">
+                                <input type="number" class="form-control" id="losspoints" name="losspoints" value="0">
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="input-group">
+                        <button name="mix" id="mix">Mix teams</button>
+                    </div>
+                    <div class="input-group">
+                        <button type="submit">Create</button>
+                    </div>
+                    <p>Please not that it may take a moment to generate the tournament after clicking create.</p>
+                </div>
+                <div class="col-sm" id="create-groups">
+                    <div class="col-md-5"><h2>Group 1</h2>
+                        <ul class="list-unstyled">
+                            <li>
+                                <input type="text" name="team[]" placeholder="Team 1">
+                            </li>
+                            <li>
+                                <input type="text" name="team[]" placeholder="Team 2">
+                            </li>
+                            <li>
+                                <input type="text" name="team[]" placeholder="Team 3">
+                            </li>
+                            <li>
+                                <input type="text" name="team[]" placeholder="Team 4">
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-md-5"><h2>Group 2</h2>
+                        <ul class="list-unstyled">
+                            <li>
+                                <input type="text" name="team[]" placeholder="Team 5">
+                            </li>
+                            <li>
+                                <input type="text" name="team[]" placeholder="Team 6">
+                            </li>
+                            <li>
+                                <input type="text" name="team[]" placeholder="Team 7">
+                            </li>
+                            <li>
+                                <input type="text" name="team[]" placeholder="Team 8">
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</main>
+
+{{ template "footer.html" . }}
