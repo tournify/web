@@ -77,5 +77,10 @@ func loadEnvVariables() (c config.Config) {
 	if os.Getenv("CACHE_PARAMETER") != "" {
 		c.CacheParameter = os.Getenv("CACHE_PARAMETER")
 	}
+
+	c.AdminEmail = ""
+	if os.Getenv("ADMIN_EMAIL") != "" {
+		c.AdminEmail = os.Getenv("ADMIN_EMAIL")
+	}
 	return c
 }

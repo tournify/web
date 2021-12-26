@@ -8,6 +8,7 @@ import (
 	"gorm.io/driver/postgres"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
+	"log"
 	"time"
 )
 
@@ -64,7 +65,29 @@ func migrateDatabase(db *gorm.DB) error {
 		&models.Team{},
 		&models.TournamentOption{},
 		&models.TournamentUser{},
-		&models.RoleUser{},
 		&models.PermissionRole{})
+
+	seed(db)
 	return err
+}
+
+func seed(db *gorm.DB) {
+	adminRole := models.Role{
+		Name:  "Admin",
+		Label: "admin",
+	}
+	res := db.Save(&adminRole)
+	if res.Error != nil {
+		// We expect this to error after it has been created
+		log.Println(res.Error)
+	}
+	userRole := models.Role{
+		Name:  "User",
+		Label: "user",
+	}
+	res = db.Save(&userRole)
+	if res.Error != nil {
+		// We expect this to error after it has been created
+		log.Println(res.Error)
+	}
 }

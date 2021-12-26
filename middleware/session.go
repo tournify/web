@@ -17,9 +17,10 @@ func Session(db *gorm.DB) gin.HandlerFunc {
 			ses := models.Session{
 				Identifier: sessionIdentifier,
 			}
-			res := db.Where(&ses).First(&ses)
+			res := db.Where(&ses).Preload("User").Preload("Role").First(&ses)
 			if res.Error == nil && !ses.HasExpired() {
-				c.Set(UserIDKey, ses.UserID)
+				c.Set(UserIDKey, ses.User.ID)
+				c.Set(UserRoleKey, ses.User.Role.Label)
 			} else {
 				log.Println(res.Error)
 			}

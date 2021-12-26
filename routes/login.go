@@ -16,6 +16,7 @@ func (controller Controller) Login(c *gin.Context) {
 	pd := PageData{
 		Title:           "Login",
 		IsAuthenticated: isAuthenticated(c),
+		IsAdmin:         isAdmin(c),
 		CacheParameter:  controller.config.CacheParameter,
 	}
 	c.HTML(http.StatusOK, "login.html", pd)
@@ -26,6 +27,7 @@ func (controller Controller) LoginPost(c *gin.Context) {
 	pd := PageData{
 		Title:           "Login",
 		IsAuthenticated: isAuthenticated(c),
+		IsAdmin:         isAdmin(c),
 		CacheParameter:  controller.config.CacheParameter,
 	}
 	email := c.PostForm("email")

@@ -19,6 +19,7 @@ func (controller Controller) ResetPassword(c *gin.Context) {
 		PageData: PageData{
 			Title:           "Reset Password",
 			IsAuthenticated: isAuthenticated(c),
+			IsAdmin:         isAdmin(c),
 			CacheParameter:  controller.config.CacheParameter,
 		},
 		Token: token,
@@ -35,6 +36,7 @@ func (controller Controller) ResetPasswordPost(c *gin.Context) {
 		PageData: PageData{
 			Title:           "Reset Password",
 			IsAuthenticated: isAuthenticated(c),
+			IsAdmin:         isAdmin(c),
 			CacheParameter:  controller.config.CacheParameter,
 		},
 		Token: token,

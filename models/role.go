@@ -4,12 +4,7 @@ import "gorm.io/gorm"
 
 type Role struct {
 	gorm.Model
-	Name  string
-	Label string
-}
-
-type RoleUser struct {
-	gorm.Model
-	User   User
-	UserID uint
+	Name  string `gorm:"uniqueIndex;size:256;"`
+	Label string `gorm:"uniqueIndex;size:256;"`
+	Users []User
 }

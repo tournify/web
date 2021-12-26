@@ -9,6 +9,7 @@ type Session struct {
 	gorm.Model
 	Identifier string
 	UserID     uint
+	User       User
 	ExpiresAt  time.Time
 }
 

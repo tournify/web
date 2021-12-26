@@ -20,6 +20,7 @@ func (controller Controller) Register(c *gin.Context) {
 	pd := PageData{
 		Title:           "Register",
 		IsAuthenticated: isAuthenticated(c),
+		IsAdmin:         isAdmin(c),
 		CacheParameter:  controller.config.CacheParameter,
 	}
 	c.HTML(http.StatusOK, "register.html", pd)
@@ -32,6 +33,7 @@ func (controller Controller) RegisterPost(c *gin.Context) {
 	pd := PageData{
 		Title:           "Register",
 		IsAuthenticated: isAuthenticated(c),
+		IsAdmin:         isAdmin(c),
 		CacheParameter:  controller.config.CacheParameter,
 	}
 	password := c.PostForm("password")
@@ -72,7 +74,9 @@ func (controller Controller) RegisterPost(c *gin.Context) {
 		return
 	}
 
-	user := models.User{Email: email}
+	user := models.User{
+		Email: email,
+	}
 
 	res := controller.db.Where(&user).First(&user)
 	if (res.Error != nil && res.Error != gorm.ErrRecordNotFound) || res.RowsAffected > 0 {
@@ -95,6 +99,37 @@ func (controller Controller) RegisterPost(c *gin.Context) {
 		return
 	}
 
+	var roles []models.Role
+
+	res = controller.db.Find(&roles)
+	if res.Error != nil {
+		pd.Messages = append(pd.Messages, Message{
+			Type:    "error",
+			Content: registerError,
+		})
+		log.Println(res.Error)
+		c.HTML(http.StatusInternalServerError, "register.html", pd)
+		return
+	}
+
+	if controller.config.AdminEmail == user.Email {
+		for _, role := range roles {
+			if role.Label == "admin" {
+				user.RoleID = role.ID
+				activated := time.Now()
+				user.ActivatedAt = &activated
+				break
+			}
+		}
+	} else {
+		for _, role := range roles {
+			if role.Label == "user" {
+				user.RoleID = role.ID
+				break
+			}
+		}
+	}
+
 	user.Password = string(hashedPassword)
 
 	res = controller.db.Save(&user)
@@ -108,8 +143,11 @@ func (controller Controller) RegisterPost(c *gin.Context) {
 		return
 	}
 
-	// Generate activation token and send activation email
-	go controller.activationEmailHandler(user.ID, email)
+	// Admin role activates automatically
+	if user.ActivatedAt == nil {
+		// Generate activation token and send activation email
+		go controller.activationEmailHandler(user.ID, email)
+	}
 
 	pd.Messages = append(pd.Messages, Message{
 		Type:    "success",

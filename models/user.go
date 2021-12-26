@@ -16,4 +16,6 @@ type User struct {
 	Sessions    []Session
 	UserGroup   int // Admin, free user, paid basic user, paid whitelabel user
 	Tournaments []TournamentUser
+	RoleID      uint
+	Role        Role
 }

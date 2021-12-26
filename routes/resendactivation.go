@@ -11,6 +11,7 @@ func (controller Controller) ResendActivation(c *gin.Context) {
 	pd := PageData{
 		Title:           "Resend Activation Email",
 		IsAuthenticated: isAuthenticated(c),
+		IsAdmin:         isAdmin(c),
 		CacheParameter:  controller.config.CacheParameter,
 	}
 	c.HTML(http.StatusOK, "resendactivation.html", pd)
@@ -20,6 +21,7 @@ func (controller Controller) ResendActivationPost(c *gin.Context) {
 	pd := PageData{
 		Title:           "Resend Activation Email",
 		IsAuthenticated: isAuthenticated(c),
+		IsAdmin:         isAdmin(c),
 		CacheParameter:  controller.config.CacheParameter,
 	}
 	email := c.PostForm("email")

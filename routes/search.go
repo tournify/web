@@ -18,6 +18,7 @@ func (controller Controller) Search(c *gin.Context) {
 		PageData: PageData{
 			Title:           "Search",
 			IsAuthenticated: isAuthenticated(c),
+			IsAdmin:         isAdmin(c),
 			CacheParameter:  controller.config.CacheParameter,
 		},
 	}

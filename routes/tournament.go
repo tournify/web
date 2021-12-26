@@ -36,6 +36,7 @@ func (controller Controller) TournamentCreate(c *gin.Context) {
 		PageData: PageData{
 			Title:           "Create Tournament",
 			IsAuthenticated: isAuthenticated(c),
+			IsAdmin:         isAdmin(c),
 			CacheParameter:  controller.config.CacheParameter,
 		},
 		TournamentName: "",
@@ -48,6 +49,7 @@ func (controller Controller) TournamentCreatePost(c *gin.Context) {
 		PageData: PageData{
 			Title:           "Create Tournament",
 			IsAuthenticated: isAuthenticated(c),
+			IsAdmin:         isAdmin(c),
 			CacheParameter:  controller.config.CacheParameter,
 		},
 		TournamentName: "",
@@ -371,6 +373,7 @@ func (controller Controller) TournamentView(c *gin.Context) {
 		PageData: PageData{
 			Title:           "Tournament",
 			IsAuthenticated: isAuthenticated(c),
+			IsAdmin:         isAdmin(c),
 			CacheParameter:  controller.config.CacheParameter,
 		},
 		TournamentName: "",

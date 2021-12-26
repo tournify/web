@@ -24,6 +24,7 @@ type PageData struct {
 	Title           string
 	Messages        []Message
 	IsAuthenticated bool
+	IsAdmin         bool
 	CacheParameter  string
 }
 
@@ -35,4 +36,10 @@ type Message struct {
 func isAuthenticated(c *gin.Context) bool {
 	_, exists := c.Get(middleware.UserIDKey)
 	return exists
+}
+
+func isAdmin(c *gin.Context) bool {
+	_, exists := c.Get(middleware.UserIDKey)
+	role, roleExists := c.Get(middleware.UserRoleKey)
+	return exists && roleExists && role == "admin"
 }

@@ -14,6 +14,7 @@ func (controller Controller) Activate(c *gin.Context) {
 	pd := PageData{
 		Title:           "Activate",
 		IsAuthenticated: isAuthenticated(c),
+		IsAdmin:         isAdmin(c),
 		CacheParameter:  controller.config.CacheParameter,
 	}
 	token := c.Param("token")
