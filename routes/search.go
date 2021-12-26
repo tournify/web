@@ -3,6 +3,7 @@ package routes
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/nicksnyder/go-i18n/v2/i18n"
 	"github.com/tournify/web/models"
 	"log"
 	"net/http"
@@ -14,13 +15,18 @@ type SearchData struct {
 }
 
 func (controller Controller) Search(c *gin.Context) {
-	pd := SearchData{
-		PageData: PageData{
-			Title:           "Search",
-			IsAuthenticated: isAuthenticated(c),
-			IsAdmin:         isAdmin(c),
-			CacheParameter:  controller.config.CacheParameter,
+	localize := i18n.NewLocalizer(controller.bundle, domainLanguage(c))
+
+	title, _ := localize.Localize(&i18n.LocalizeConfig{
+		DefaultMessage: &i18n.Message{
+			ID:    "search_title",
+			Other: "Search",
 		},
+	})
+	pd := controller.defaultPageData(c)
+	pd.Title = title
+	sd := SearchData{
+		PageData: pd,
 	}
 	search := c.PostForm("search")
 
@@ -33,16 +39,16 @@ func (controller Controller) Search(c *gin.Context) {
 	res := controller.db.Where("privacy = ? AND (name LIKE ? OR description LIKE ?)", models.TournamentPrivacyPublic, search, search).Find(&results)
 
 	if res.Error != nil || len(results) == 0 {
-		pd.Messages = append(pd.Messages, Message{
+		pd.Messages = append(sd.Messages, Message{
 			Type:    "error",
 			Content: "No results found",
 		})
 		log.Println(res.Error)
-		c.HTML(http.StatusOK, "search.html", pd)
+		c.HTML(http.StatusOK, "search.html", sd)
 		return
 	}
 
-	pd.Results = results
+	sd.Results = results
 
-	c.HTML(http.StatusOK, "search.html", pd)
+	c.HTML(http.StatusOK, "search.html", sd)
 }

@@ -4,11 +4,19 @@ import "gorm.io/gorm"
 
 type Post struct {
 	gorm.Model
-	Title       string
-	Slug        string `gorm:"uniqueIndex;size:256;"`
+	Localizations []PostLocalization
+	Slug          string `gorm:"uniqueIndex;size:256;"`
+	CreatorID     uint
+	Creator       User
+}
+
+type PostLocalization struct {
+	gorm.Model
+	PostID      uint
+	Post        Post
+	Lang        string
 	Content     string // LongText
 	Keywords    string
 	Description string
-	CreatorID   uint
-	Creator     User
+	Title       string
 }

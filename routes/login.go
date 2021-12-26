@@ -3,6 +3,7 @@ package routes
 import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
+	"github.com/nicksnyder/go-i18n/v2/i18n"
 	"github.com/tournify/web/middleware"
 	"github.com/tournify/web/models"
 	"github.com/tournify/web/util"
@@ -13,23 +14,31 @@ import (
 )
 
 func (controller Controller) Login(c *gin.Context) {
-	pd := PageData{
-		Title:           "Login",
-		IsAuthenticated: isAuthenticated(c),
-		IsAdmin:         isAdmin(c),
-		CacheParameter:  controller.config.CacheParameter,
-	}
+	localize := i18n.NewLocalizer(controller.bundle, domainLanguage(c))
+
+	title, _ := localize.Localize(&i18n.LocalizeConfig{
+		DefaultMessage: &i18n.Message{
+			ID:    "login_title",
+			Other: "Login",
+		},
+	})
+	pd := controller.defaultPageData(c)
+	pd.Title = title
 	c.HTML(http.StatusOK, "login.html", pd)
 }
 
 func (controller Controller) LoginPost(c *gin.Context) {
 	loginError := "Could not login, please make sure that you have typed in the correct email and password. If you have forgotten your password, please click the forgot password link below."
-	pd := PageData{
-		Title:           "Login",
-		IsAuthenticated: isAuthenticated(c),
-		IsAdmin:         isAdmin(c),
-		CacheParameter:  controller.config.CacheParameter,
-	}
+	localize := i18n.NewLocalizer(controller.bundle, domainLanguage(c))
+
+	title, _ := localize.Localize(&i18n.LocalizeConfig{
+		DefaultMessage: &i18n.Message{
+			ID:    "login_title",
+			Other: "Login",
+		},
+	})
+	pd := controller.defaultPageData(c)
+	pd.Title = title
 	email := c.PostForm("email")
 	user := models.User{Email: email}
 

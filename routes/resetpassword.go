@@ -2,6 +2,7 @@ package routes
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/nicksnyder/go-i18n/v2/i18n"
 	"github.com/tournify/web/models"
 	"golang.org/x/crypto/bcrypt"
 	"log"
@@ -15,15 +16,20 @@ type ResetPasswordPageData struct {
 
 func (controller Controller) ResetPassword(c *gin.Context) {
 	token := c.Param("token")
-	pd := ResetPasswordPageData{
-		PageData: PageData{
-			Title:           "Reset Password",
-			IsAuthenticated: isAuthenticated(c),
-			IsAdmin:         isAdmin(c),
-			CacheParameter:  controller.config.CacheParameter,
+	localize := i18n.NewLocalizer(controller.bundle, domainLanguage(c))
+
+	title, _ := localize.Localize(&i18n.LocalizeConfig{
+		DefaultMessage: &i18n.Message{
+			ID:    "reset_password_title",
+			Other: "Reset Password",
 		},
-		Token: token,
+	})
+
+	pd := ResetPasswordPageData{
+		PageData: controller.defaultPageData(c),
+		Token:    token,
 	}
+	pd.Title = title
 	c.HTML(http.StatusOK, "resetpassword.html", pd)
 }
 
@@ -32,15 +38,20 @@ func (controller Controller) ResetPasswordPost(c *gin.Context) {
 	resetError := "Could not reset password, please try again"
 
 	token := c.Param("token")
-	pd := ResetPasswordPageData{
-		PageData: PageData{
-			Title:           "Reset Password",
-			IsAuthenticated: isAuthenticated(c),
-			IsAdmin:         isAdmin(c),
-			CacheParameter:  controller.config.CacheParameter,
+	localize := i18n.NewLocalizer(controller.bundle, domainLanguage(c))
+
+	title, _ := localize.Localize(&i18n.LocalizeConfig{
+		DefaultMessage: &i18n.Message{
+			ID:    "reset_password_title",
+			Other: "Reset Password",
 		},
-		Token: token,
+	})
+
+	pd := ResetPasswordPageData{
+		PageData: controller.defaultPageData(c),
+		Token:    token,
 	}
+	pd.Title = title
 	password := c.PostForm("password")
 
 	if len(password) < 8 {

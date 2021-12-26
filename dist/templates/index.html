@@ -3,31 +3,30 @@
 <main class="flex-shrink-0">
     <article class="welcome" id="welcome">
         <div class="create-tournament-form">
-        <h2><span>Tournify</span>.io</h2>
-        <p>Easy to create tournaments</p>
+        <h2><span>{{ .SiteNameFirst }}</span>{{ .SiteNameLast }}</h2>
+        <p>{{ .EasyToCreateTournaments }}</p>
 
         <form method="post" action="/tournament/create">
             <div class="form-floating">
                 <input type="text" name="tourname" id="floatingTournamentName" class="form-control">
-                <label for="floatingTournamentName">Tournament name (optional)</label>
+                <label for="floatingTournamentName">{{ .TournamentName }} ({{ .Optional }})</label>
             </div>
             <div class="tournament-create-button">
-                <button type="submit" class="w-100 btn btn-lg btn-outline-light">Create</button>
+                <button type="submit" class="w-100 btn btn-lg btn-outline-light">{{ .Create }}</button>
             </div>
         </form>
         </div>
     </article>
     <div class="container">
         <div class="subscribe-form">
-        <h3 class="mb-3 mt-5">Subscribe to our newsletter</h3>
+        <h3 class="mb-3 mt-5">{{ .SubscribeToOurNewsletter }}</h3>
         <div class="subscribe-form">
             <form method="post" action="/subscribe" class="d-flex">
-            <input id="email" type="text" name="email" class="form-control" placeholder="Email">
-            <button type="submit" class="btn btn-lg btn-primary">Subscribe</button>
+            <input id="email" type="text" name="email" class="form-control" placeholder="{{ .Email }}">
+            <button type="submit" class="btn btn-lg btn-primary">{{ .Subscribe }}</button>
             </form>
         </div>
-        <p class="lead mb-3 mt-3">If you want to receive updates from us just pop your email in the box. We think that spam is for
-            jerks. And jerks we are not.</p>
+        <p class="lead mb-3 mt-3">{{ .NoSpamNotice }}</p>
         </div>
     </div>
 </main>

@@ -3,6 +3,7 @@ package routes
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/nicksnyder/go-i18n/v2/i18n"
 	email2 "github.com/tournify/web/email"
 	"github.com/tournify/web/models"
 	"github.com/tournify/web/util"
@@ -15,22 +16,30 @@ import (
 )
 
 func (controller Controller) ForgotPassword(c *gin.Context) {
-	pd := PageData{
-		Title:           "Forgot Password",
-		IsAuthenticated: isAuthenticated(c),
-		IsAdmin:         isAdmin(c),
-		CacheParameter:  controller.config.CacheParameter,
-	}
+	localize := i18n.NewLocalizer(controller.bundle, domainLanguage(c))
+
+	title, _ := localize.Localize(&i18n.LocalizeConfig{
+		DefaultMessage: &i18n.Message{
+			ID:    "forgot_password_title",
+			Other: "Forgot Password",
+		},
+	})
+	pd := controller.defaultPageData(c)
+	pd.Title = title
 	c.HTML(http.StatusOK, "forgotpassword.html", pd)
 }
 
 func (controller Controller) ForgotPasswordPost(c *gin.Context) {
-	pd := PageData{
-		Title:           "Forgot Password",
-		IsAuthenticated: isAuthenticated(c),
-		IsAdmin:         isAdmin(c),
-		CacheParameter:  controller.config.CacheParameter,
-	}
+	localize := i18n.NewLocalizer(controller.bundle, domainLanguage(c))
+
+	title, _ := localize.Localize(&i18n.LocalizeConfig{
+		DefaultMessage: &i18n.Message{
+			ID:    "forgot_password_title",
+			Other: "Forgot Password",
+		},
+	})
+	pd := controller.defaultPageData(c)
+	pd.Title = title
 	email := c.PostForm("email")
 	user := models.User{Email: email}
 	res := controller.db.Where(&user).First(&user)

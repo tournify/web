@@ -2,28 +2,37 @@ package routes
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/nicksnyder/go-i18n/v2/i18n"
 	"github.com/tournify/web/models"
 	"log"
 	"net/http"
 )
 
 func (controller Controller) ResendActivation(c *gin.Context) {
-	pd := PageData{
-		Title:           "Resend Activation Email",
-		IsAuthenticated: isAuthenticated(c),
-		IsAdmin:         isAdmin(c),
-		CacheParameter:  controller.config.CacheParameter,
-	}
+	localize := i18n.NewLocalizer(controller.bundle, domainLanguage(c))
+
+	title, _ := localize.Localize(&i18n.LocalizeConfig{
+		DefaultMessage: &i18n.Message{
+			ID:    "resend_activation_email_title",
+			Other: "Resend Activation Email",
+		},
+	})
+	pd := controller.defaultPageData(c)
+	pd.Title = title
 	c.HTML(http.StatusOK, "resendactivation.html", pd)
 }
 
 func (controller Controller) ResendActivationPost(c *gin.Context) {
-	pd := PageData{
-		Title:           "Resend Activation Email",
-		IsAuthenticated: isAuthenticated(c),
-		IsAdmin:         isAdmin(c),
-		CacheParameter:  controller.config.CacheParameter,
-	}
+	localize := i18n.NewLocalizer(controller.bundle, domainLanguage(c))
+
+	title, _ := localize.Localize(&i18n.LocalizeConfig{
+		DefaultMessage: &i18n.Message{
+			ID:    "resend_activation_email_title",
+			Other: "Resend Activation Email",
+		},
+	})
+	pd := controller.defaultPageData(c)
+	pd.Title = title
 	email := c.PostForm("email")
 	user := models.User{Email: email}
 	res := controller.db.Where(&user).First(&user)

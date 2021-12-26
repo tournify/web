@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/gosimple/slug"
+	"github.com/nicksnyder/go-i18n/v2/i18n"
 	"github.com/tournify/tournify"
 	"github.com/tournify/web/models"
 	"gorm.io/gorm"
@@ -32,28 +33,36 @@ type TournamentViewGroup struct {
 }
 
 func (controller Controller) TournamentCreate(c *gin.Context) {
-	pd := TournamentCreatePageData{
-		PageData: PageData{
-			Title:           "Create Tournament",
-			IsAuthenticated: isAuthenticated(c),
-			IsAdmin:         isAdmin(c),
-			CacheParameter:  controller.config.CacheParameter,
+	localize := i18n.NewLocalizer(controller.bundle, domainLanguage(c))
+
+	title, _ := localize.Localize(&i18n.LocalizeConfig{
+		DefaultMessage: &i18n.Message{
+			ID:    "create_tournament_title",
+			Other: "Create Tournament",
 		},
+	})
+	pd := TournamentCreatePageData{
+		PageData:       controller.defaultPageData(c),
 		TournamentName: "",
 	}
+	pd.Title = title
 	c.HTML(http.StatusOK, "tournament-create.html", pd)
 }
 
 func (controller Controller) TournamentCreatePost(c *gin.Context) {
-	pd := TournamentCreatePageData{
-		PageData: PageData{
-			Title:           "Create Tournament",
-			IsAuthenticated: isAuthenticated(c),
-			IsAdmin:         isAdmin(c),
-			CacheParameter:  controller.config.CacheParameter,
+	localize := i18n.NewLocalizer(controller.bundle, domainLanguage(c))
+
+	title, _ := localize.Localize(&i18n.LocalizeConfig{
+		DefaultMessage: &i18n.Message{
+			ID:    "create_tournament_title",
+			Other: "Create Tournament",
 		},
+	})
+	pd := TournamentCreatePageData{
+		PageData:       controller.defaultPageData(c),
 		TournamentName: "",
 	}
+	pd.Title = title
 	name := strings.TrimSpace(c.PostForm("tourname"))
 
 	pd.TournamentName = name
@@ -369,15 +378,19 @@ func (controller Controller) TournamentCreatePost(c *gin.Context) {
 }
 
 func (controller Controller) TournamentView(c *gin.Context) {
-	pd := TournamentViewPageData{
-		PageData: PageData{
-			Title:           "Tournament",
-			IsAuthenticated: isAuthenticated(c),
-			IsAdmin:         isAdmin(c),
-			CacheParameter:  controller.config.CacheParameter,
+	localize := i18n.NewLocalizer(controller.bundle, domainLanguage(c))
+
+	title, _ := localize.Localize(&i18n.LocalizeConfig{
+		DefaultMessage: &i18n.Message{
+			ID:    "tournament_title",
+			Other: "Tournament",
 		},
+	})
+	pd := TournamentViewPageData{
+		PageData:       controller.defaultPageData(c),
 		TournamentName: "",
 	}
+	pd.Title = title
 	slugParam := c.Param("slug")
 	t := models.Tournament{
 		Slug: slugParam,

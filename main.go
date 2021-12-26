@@ -2,11 +2,14 @@ package web
 
 import (
 	"embed"
+	"github.com/BurntSushi/toml"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
+	"github.com/nicksnyder/go-i18n/v2/i18n"
 	"github.com/tournify/web/middleware"
 	"github.com/tournify/web/routes"
+	"golang.org/x/text/language"
 	"html/template"
 	"io/fs"
 	"log"
@@ -22,12 +25,24 @@ func Run() {
 	// When generating random strings we need to provide a seed otherwise we always get the same strings the next time our application starts
 	rand.Seed(time.Now().UnixNano())
 
+	// Translations
+	bundle := i18n.NewBundle(language.English)
+	bundle.RegisterUnmarshalFunc("toml", toml.Unmarshal)
+	_, err := bundle.LoadMessageFile("active.en.toml")
+	if err != nil {
+		log.Fatalln(err)
+	}
+	_, err = bundle.LoadMessageFile("active.se.toml")
+	if err != nil {
+		log.Fatalln(err)
+	}
+
 	var t *template.Template
 	conf := loadEnvVariables()
 
-	db, err := connectToDatabase(conf)
-	if err != nil {
-		log.Fatalln(err)
+	db, err2 := connectToDatabase(conf)
+	if err2 != nil {
+		log.Fatalln(err2)
 	}
 
 	err = migrateDatabase(db)
@@ -60,7 +75,7 @@ func Run() {
 	r.Use(middleware.Session(db))
 	r.Use(middleware.General())
 
-	controller := routes.New(db, conf)
+	controller := routes.New(db, conf, bundle)
 
 	r.GET("/", controller.Index)
 	r.GET("/search", controller.Search)

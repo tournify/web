@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
+	"github.com/nicksnyder/go-i18n/v2/i18n"
 	email2 "github.com/tournify/web/email"
 	"github.com/tournify/web/models"
 	"github.com/tournify/web/util"
@@ -17,12 +18,16 @@ import (
 )
 
 func (controller Controller) Register(c *gin.Context) {
-	pd := PageData{
-		Title:           "Register",
-		IsAuthenticated: isAuthenticated(c),
-		IsAdmin:         isAdmin(c),
-		CacheParameter:  controller.config.CacheParameter,
-	}
+	localize := i18n.NewLocalizer(controller.bundle, domainLanguage(c))
+
+	title, _ := localize.Localize(&i18n.LocalizeConfig{
+		DefaultMessage: &i18n.Message{
+			ID:    "register_title",
+			Other: "Register",
+		},
+	})
+	pd := controller.defaultPageData(c)
+	pd.Title = title
 	c.HTML(http.StatusOK, "register.html", pd)
 }
 
@@ -30,12 +35,16 @@ func (controller Controller) RegisterPost(c *gin.Context) {
 	passwordError := "Your password must be 8 characters in length or longer"
 	registerError := "Could not register, please make sure the details you have provided are correct and that you do not already have an existing account."
 	registerSuccess := "Thank you for registering. An activation email has been sent with steps describing how to activate your account."
-	pd := PageData{
-		Title:           "Register",
-		IsAuthenticated: isAuthenticated(c),
-		IsAdmin:         isAdmin(c),
-		CacheParameter:  controller.config.CacheParameter,
-	}
+	localize := i18n.NewLocalizer(controller.bundle, domainLanguage(c))
+
+	title, _ := localize.Localize(&i18n.LocalizeConfig{
+		DefaultMessage: &i18n.Message{
+			ID:    "register_title",
+			Other: "Register",
+		},
+	})
+	pd := controller.defaultPageData(c)
+	pd.Title = title
 	password := c.PostForm("password")
 	if len(password) < 8 {
 		pd.Messages = append(pd.Messages, Message{

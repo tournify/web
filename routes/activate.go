@@ -2,6 +2,7 @@ package routes
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/nicksnyder/go-i18n/v2/i18n"
 	"github.com/tournify/web/models"
 	"log"
 	"net/http"
@@ -11,12 +12,16 @@ import (
 func (controller Controller) Activate(c *gin.Context) {
 	activationError := "Please provide a valid activation token"
 	activationSuccess := "Account activated. You may now proceed to login to your account."
-	pd := PageData{
-		Title:           "Activate",
-		IsAuthenticated: isAuthenticated(c),
-		IsAdmin:         isAdmin(c),
-		CacheParameter:  controller.config.CacheParameter,
-	}
+	localize := i18n.NewLocalizer(controller.bundle, domainLanguage(c))
+
+	title, _ := localize.Localize(&i18n.LocalizeConfig{
+		DefaultMessage: &i18n.Message{
+			ID:    "activate_title",
+			Other: "Activate",
+		},
+	})
+	pd := controller.defaultPageData(c)
+	pd.Title = title
 	token := c.Param("token")
 	activationToken := models.Token{
 		Value: token,

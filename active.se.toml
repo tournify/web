@@ -1,0 +1,99 @@
+[admin]
+hash = "sha1-4e7afebcfbae000b22c7c85e5560f89a2a0280b4"
+other = "Admin"
+
+[blog]
+hash = "sha1-0b9d2b2362bc33581ba11fddcb0cf0590ebd3a7a"
+other = "Blogg"
+
+[create]
+hash = "sha1-6e157c5da4410b7e9de85f5c93026b9176e69064"
+other = "Skapa"
+
+[create_blog_post]
+hash = "sha1-94626f087a9f73af3dbe9ada8e2199fa0fa8c076"
+other = "Skapa Blogg Inlägg"
+
+[create_tournament]
+hash = "sha1-44407b4e2922be9c2bb52f010772f2f2c1068e49"
+other = "Skapa Turnering"
+
+[created_by]
+hash = "sha1-5d73cc30510c739ed68c572c5199e106d325b648"
+other = "Skapad av"
+
+[dashboard]
+hash = "sha1-d87f47b47e4d5794d53fe0734c49417bd046cde0"
+other = "Översikt"
+
+[easy_to_create_tournaments]
+hash = "sha1-0b7a99f8b8eeffc21ab089e79d46c5279d2f8bf8"
+other = "Enkelt att skapa turneringar"
+
+[email]
+hash = "sha1-84add5b2952787581cb9a8851eef63d1ec75d22b"
+other = "E-post"
+
+[fork_this_project_on]
+hash = "sha1-14d277545460f1796542547a5cf2151fc433f917"
+other = "Skapa en fork av detta projekt på"
+
+[home]
+hash = "sha1-70f8bb9a8a5393ef080507a89e4b98d139000d65"
+other = "Hem"
+
+[login]
+hash = "sha1-4e5a2893bdcc7d239c1db72e4c4ffbe4bea73174"
+other = "Logga in"
+
+[logout]
+hash = "sha1-e43d612e11f1568f2373e719d4c4b08dcecdc7cc"
+other = "Logga ut"
+
+[no_spam_notice]
+hash = "sha1-b6f8cf81201bb373ba7292d2918eb4e084782dde"
+other = "Fyll i din e-post om du vill få nyheter från oss. Vi skickar aldrig spam och lämnar aldrig ut din e-post till tredje part."
+
+[optional]
+hash = "sha1-0c6c4102d4dfec3b1aa41117e0e344046c58a151"
+other = "Valfritt"
+
+[privacy_policy]
+hash = "sha1-9db108ba6b7f6571356060929e37dae65878cfca"
+other = "Integritetspolicy"
+
+[register]
+hash = "sha1-d672995a14650d0e018026b64f297663d8c71c8d"
+other = "Registrera"
+
+[search]
+hash = "sha1-bce06414177f72ab70e6387b6af9f8ceef0d6049"
+other = "Sök"
+
+[site_name]
+hash = "sha1-cd1e6420c8e1b7ea6cc490f654d25d57476fcbf2"
+other = "Turnering.io"
+
+[site_name_first]
+hash = "sha1-8950d1d9609d3b0e1e12e8f6cc9917b74acde024"
+other = "Turnering"
+
+[site_name_last]
+hash = "sha1-6c3cf31563bae820f4c547f3f9d5c29a743581d8"
+other = ".io"
+
+[subscribe]
+hash = "sha1-d6981f74767d6c63d6062ad21b3bdfcd0d0d6602"
+other = "Prenumerera"
+
+[subscribe_to_our_newsletter]
+hash = "sha1-3ae5a4f21ea0626bab5ac6472de6e1415aaa416a"
+other = "Prenumerera på vårt nyhetsbrev"
+
+[terms_of_service]
+hash = "sha1-0c8a9a95e21aeb403402ed64338810d787cc5f91"
+other = "Användarvillkor"
+
+[tournament_name]
+hash = "sha1-5d357591bb4332ae0e961a131b4df44460eedb42"
+other = "Turneringens namn"

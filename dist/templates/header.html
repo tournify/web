@@ -3,7 +3,7 @@
 <header>
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="/">Tournify.io</a>
+            <a class="navbar-brand" href="/">{{ .SiteName }}</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
                     aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -12,51 +12,45 @@
                 {{ if .IsAuthenticated }}
                 <ul class="navbar-nav me-auto mb-2 mb-md-0">
                     <li class="nav-item">
-                        <a class="nav-link" href="/">Home</a>
+                        <a class="nav-link" href="/tournament/create">{{ .CreateTournament }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/tournament/create">Create Tournament</a>
+                        <a class="nav-link" href="/dashboard">{{ .Dashboard }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/dashboard">Dashboard</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/blog">Blog</a>
+                        <a class="nav-link" href="/blog">{{ .Blog }}</a>
                     </li>
                     {{ if .IsAdmin }}
                     <li class="nav-item">
-                        <a class="nav-link" href="/blog/create">Create Blog Post</a>
+                        <a class="nav-link" href="/blog/create">{{ .CreateBlogPost }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/admin">Admin</a>
+                        <a class="nav-link" href="/admin">{{ .Admin }}</a>
                     </li>
                     {{ end }}
                     <li class="nav-item">
-                        <a class="nav-link" href="/logout">Logout</a>
+                        <a class="nav-link" href="/logout">{{ .Logout }}</a>
                     </li>
                 </ul>
                 {{ else }}
                 <ul class="navbar-nav me-auto mb-2 mb-md-0">
                     <li class="nav-item">
-                        <a class="nav-link" href="/">Home</a>
+                        <a class="nav-link" href="/tournament/create">{{ .CreateTournament }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/tournament/create">Create Tournament</a>
+                        <a class="nav-link" href="/blog">{{ .Blog }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/blog">Blog</a>
+                        <a class="nav-link" href="/login">{{ .Login }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/login">Login</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/register">Register</a>
+                        <a class="nav-link" href="/register">{{ .Register }}</a>
                     </li>
                 </ul>
                 {{ end }}
                 <form method="post" action="/search" class="d-flex">
-                    <input name="search" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
+                    <input name="search" class="form-control me-2" type="search" placeholder="{{ .Search }}" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">{{ .Search }}</button>
                 </form>
             </div>
         </div>
