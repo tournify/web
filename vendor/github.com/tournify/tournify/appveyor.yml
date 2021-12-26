@@ -1,0 +1,28 @@
+version: "{build}"
+
+os: Windows Server 2012 R2
+
+build: off
+
+stack: go 1.15
+
+clone_folder: c:\gopath\src\github.com\tournify\tournify
+
+environment:
+  GOPATH: c:\gopath
+
+install:
+  - set PATH=%GOPATH%\bin;%PATH%
+  - set PATH=C:\msys64\mingw64\bin;%PATH%
+  - go version
+  - go env
+  - go get -t -v ./...
+  - go get -u golang.org/x/lint/golint
+
+test_script:
+  - go test -v ./...
+
+after_test:
+  - golint ./...
+
+deploy: off

@@ -1,0 +1,21 @@
+language: go
+
+go:
+  - 1.13.x
+  - 1.14.x
+  - 1.15.x
+  - tip
+
+before_install:
+  - go get -t -v ./...
+  - go get -u golang.org/x/lint/golint
+  - go get github.com/axw/gocov/gocov
+
+script:
+  - test -z "`gofmt -l .`"
+  - test -z "`golint ./...`"
+  - chmod +x ./go.test.sh
+  - ./go.test.sh
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)

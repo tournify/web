@@ -14,7 +14,7 @@ import "gorm.io/gorm"
 type Player struct {
 	gorm.Model
 	Name        string
-	Slug        string
+	Slug        string `gorm:"uniqueIndex;size:256;"`
 	Keywords    string
 	Description string
 }

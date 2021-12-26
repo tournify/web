@@ -4,10 +4,12 @@ import 'bootstrap/js/src/collapse'
 import 'bootstrap/js/src/alert'
 
 let createGroups = document.getElementById("create-groups");
+let viewTournament = document.getElementById("view-tournament");
 // If createGroups exists it means we are on the create tournament page
 if(createGroups){
     let tourType = document.getElementById("tourtype");
     let teamCount = document.getElementById("teamcount");
+    let meetCount = document.getElementById("meetcount");
     let groupCount = document.getElementById("groupcount");
     let extraGroupFields = document.getElementById("extragroup")
     let advancedLink = document.getElementById("advlnk")
@@ -16,6 +18,7 @@ if(createGroups){
     tourType.addEventListener('change', renderCreateGroups);
     teamCount.addEventListener('change', renderCreateGroups);
     groupCount.addEventListener('change', renderCreateGroups);
+    meetCount.addEventListener('change', renderCreateGroups);
     advancedLink.addEventListener('click', function (e) {
         e.preventDefault()
         if (advancedArea.style.display === "none") {
@@ -52,7 +55,26 @@ if(createGroups){
             extraGroupFields.style.display = "none"
         }
         let teamCountInt = parseInt(teamCount.value, 10)
+        if (teamCountInt > 10) {
+            teamCountInt = 10
+            teamCount.value = 10
+        }
+        if (teamCountInt < 2) {
+            teamCountInt = 2
+            teamCount.value = 2
+        }
+        let meetCountInt = parseInt(meetCount.value, 10)
+        if (meetCountInt > 4) {
+            meetCount.value = 4
+        }
+        if (meetCountInt < 1) {
+            meetCount.value = 1
+        }
         let groupCountInt = parseInt(groupCount.value, 10)
+        if (groupCountInt < 1) {
+            groupCountInt = 1
+            groupCount.value = 1
+        }
         let tpg = teamCountInt/groupCountInt
         let group = 1
         let groups = []
@@ -90,6 +112,72 @@ if(createGroups){
             if (teams.length > 0) {
                 input.value = teams.pop ()
             }
+        });
+    }
+} else if (viewTournament) {
+    let statisticsBlock = document.getElementById("group-tournament-statistics")
+    document.querySelectorAll("input[name='home']").forEach( input => {
+        input.addEventListener("change", updateGame)
+    });
+    document.querySelectorAll("input[name='away']").forEach( input => {
+        input.addEventListener("change", updateGame)
+    });
+
+    function updateGame(e) {
+        let data = {};
+        let row = e.target.closest("tr")
+        let inputs = row.getElementsByTagName( 'input' );
+        for ( let z = 0; z < inputs.length; z++ ) {
+            data[inputs[z].name] = inputs[z].value
+        }
+        fetch("/api/tournament/" + data["slug"] + "/game/" + data["id"], {
+            method: "POST",
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(data)
+        }).then(res => {
+            res.text().then(result => {
+                fetch("/api/tournament/" + data["slug"] + "/stats", {
+                    method: "GET",
+                }).then(res => {
+                    res.text().then(result => {
+                        const obj = JSON.parse(result);
+                        let newHtml = "<table class=\"table table-hover table-sm\">"
+                        for (const [key, value] of Object.entries(obj)) {
+                            newHtml += "<thead>"
+                            newHtml += "<tr>"
+                            newHtml += "<th scope=\"col\">Group " + key + "</th>"
+                            newHtml += "<th scope=\"col\">Team</th>"
+                            newHtml += "<th scope=\"col\">Played</th>"
+                            newHtml += "<th scope=\"col\">Wins</th>"
+                            newHtml += "<th scope=\"col\">Ties</th>"
+                            newHtml += "<th scope=\"col\">Lost</th>"
+                            newHtml += "<th scope=\"col\">+/-</th>"
+                            newHtml += "<th scope=\"col\">Diff</th>"
+                            newHtml += "<th scope=\"col\">Points</th>"
+                            newHtml += "</tr>"
+                            newHtml += "</thead>"
+                            newHtml += "</tbody>"
+                            for (const [statKey, statValue] of Object.entries(value.stats)) {
+                                newHtml += "<tr>"
+                                newHtml += "<td></td>"
+                                newHtml += "<th scope=\"row\">" + statValue.team.name + "</th>"
+                                newHtml += "<td>" + statValue.played + "</td>"
+                                newHtml += "<td>" + statValue.wins + "</td>"
+                                newHtml += "<td>" + statValue.ties + "</td>"
+                                newHtml += "<td>" + statValue.losses + "</td>"
+                                newHtml += "<td>" + statValue.points_for + "/" + statValue.points_against + "</td>"
+                                newHtml += "<td>" + (statValue.points_for - statValue.points_against) + "</td>"
+                                newHtml += "<td>" + statValue.points + "</td>"
+                                newHtml += "</tr>"
+                            }
+                            newHtml += "</tbody>"
+                        }
+                        newHtml += "</table>"
+                        statisticsBlock.innerHTML = newHtml
+                    })
+                });
+            })
+
         });
     }
 }

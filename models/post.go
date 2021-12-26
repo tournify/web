@@ -5,7 +5,7 @@ import "gorm.io/gorm"
 type Post struct {
 	gorm.Model
 	Title       string
-	Slug        string
+	Slug        string `gorm:"uniqueIndex;size:256;"`
 	Content     string // LongText
 	Keywords    string
 	Description string

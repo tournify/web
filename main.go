@@ -69,13 +69,16 @@ func Run() {
 	r.GET("/privacy-policy", controller.PrivacyPolicy)
 	r.GET("/tournament/create", controller.TournamentCreate)
 	r.POST("/tournament/create", controller.TournamentCreatePost)
-	r.GET("/tournament/:slug", controller.TournamentView)
-	r.POST("/tournament/:slug", controller.TournamentViewPost)
+	r.Any("/tournament/:slug", controller.TournamentView)
 	r.GET("/tournament/:slug/game/:gameslug", controller.TournamentGameView)
-	r.POST("/tournament/:slug/game/:gameslug", controller.TournamentGameViewPost)
 	r.GET("/blog", controller.BlogView)
 	r.GET("/blog/:slug", controller.BlogViewPage)
 	r.POST("/subscribe", controller.SubscribePost)
+
+	api := r.Group("/api")
+	api.Use(middleware.Sensitive())
+	api.POST("/tournament/:slug/game/:id", controller.APITournamentGameUpdate)
+	api.GET("/tournament/:slug/stats", controller.APITournamentStats)
 
 	r.NoRoute(controller.NoRoute)
 
