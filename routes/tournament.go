@@ -188,6 +188,15 @@ func (controller Controller) TournamentCreatePost(c *gin.Context) {
 			return
 		}
 
+		if len(teams)/groupCountInt < 2 {
+			pd.Messages = append(pd.Messages, Message{
+				Type:    "error",
+				Content: "There must be enough teams to have at least 2 teams per group.",
+			})
+			c.HTML(http.StatusBadRequest, "tournament-create.html", pd)
+			return
+		}
+
 		if name == "" {
 			name = "Tournament " + time.Now().Format("2006-01-02 15:04:05")
 		}

@@ -75,6 +75,10 @@ if(createGroups){
             groupCountInt = 1
             groupCount.value = 1
         }
+        if (teamCountInt/groupCountInt < 2) {
+            groupCountInt = 1
+            groupCount.value = 1
+        }
         let tpg = teamCountInt/groupCountInt
         let group = 1
         let groups = []
