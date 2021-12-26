@@ -528,13 +528,23 @@ func (controller *Controller) getGroupTournamentStats(t models.Tournament) (map[
 	}
 
 	// Normalize group ids
-
-	normalizedViewGroups := map[int]TournamentViewGroup{}
-	count := 0
-	for _, vg := range viewGroups {
-		count++
-		normalizedViewGroups[count] = vg
-	}
-
+	normalizedViewGroups := normalizeViewGroups(viewGroups, map[int]TournamentViewGroup{}, 1)
 	return normalizedViewGroups, nil
+}
+
+func normalizeViewGroups(gs map[int]TournamentViewGroup, normalized map[int]TournamentViewGroup, count int) map[int]TournamentViewGroup {
+	if len(gs) == 0 {
+		return normalized
+	}
+	lowestIndex := -1
+	for index := range gs {
+		if lowestIndex == -1 {
+			lowestIndex = index
+		} else if lowestIndex > index {
+			lowestIndex = index
+		}
+	}
+	normalized[count] = gs[lowestIndex]
+	delete(gs, lowestIndex)
+	return normalizeViewGroups(gs, normalized, count+1)
 }

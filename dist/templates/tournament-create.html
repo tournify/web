@@ -13,7 +13,7 @@
                     <label for="tourtype">Type</label>
 
                     <div class="input-group">
-                        <select name="tourtype" id="tourtype">
+                        <select class="form-control" name="tourtype" id="tourtype">
                             <option value="0" SELECTED>Group</option>
                             <option value="1">Elimination</option>
                         </select>
@@ -25,8 +25,7 @@
                         <input type="text" class="form-control" id="tourname" name="tourname"
                                value="{{ .TournamentName }}">
                     </div>
-                    <label for="teamcount">Number of teams</label>
-
+                    <label for="teamcount">Number of teams (Limited to 10 without an account.)</label>
                     <div class="input-group spinner">
                         <input type="number" class="form-control" id="teamcount" name="teamcount" value="8">
                     </div>
@@ -43,11 +42,11 @@
                         </div>
                         <label for="elimcount">How many teams are eliminated from each group?</label>
 
-                        <div class="input-group spinner">
+                        <div class="input-group mb-3 spinner">
                             <input type="number" class="form-control" id="elimcount" name="elimcount" value="2">
                         </div>
 
-                        <span><a id="advlnk" href="#">Advanced</a></span>
+                        <span><a class="mb-3" id="advlnk" href="#">Advanced</a></span>
                         <div id="advanced" style="display: none;">
 
                             <label for="winpoints">Points for winning</label>
@@ -70,18 +69,17 @@
                     </div>
                     <label for="visibility">Visibility</label>
 
-                    <div class="input-group">
-                        <select name="visibility" id="visibility">
+                    <div class="input-group mb-3">
+                        <select class="form-control" name="visibility" id="visibility">
                             <option value="1" SELECTED>Public</option>
-                            <option value="2">Hidden</option>
                             <option value="3">Visible with link</option>
                         </select>
                     </div>
-                    <div class="input-group">
-                        <button name="mix" id="mix">Mix teams</button>
+                    <div class="input-group mb-3">
+                        <button name="mix" class="btn btn-secondary" id="mix">Mix teams</button>
                     </div>
-                    <div class="input-group">
-                        <button type="submit">Create</button>
+                    <div class="input-group mb-3">
+                        <button type="submit" class="btn btn-primary">Create</button>
                     </div>
                     <p>By clicking create you agree to the use of cookies on this website. Please note that it may take a moment to generate the tournament after clicking create.</p>
                 </div>
@@ -89,32 +87,32 @@
                     <div class="col-md-5"><h2>Group 1</h2>
                         <ul class="list-unstyled">
                             <li>
-                                <input type="text" name="team[]" placeholder="Team 1">
+                                <input class="form-control" type="text" name="team[]" placeholder="Team 1">
                             </li>
                             <li>
-                                <input type="text" name="team[]" placeholder="Team 2">
+                                <input class="form-control" type="text" name="team[]" placeholder="Team 2">
                             </li>
                             <li>
-                                <input type="text" name="team[]" placeholder="Team 3">
+                                <input class="form-control" type="text" name="team[]" placeholder="Team 3">
                             </li>
                             <li>
-                                <input type="text" name="team[]" placeholder="Team 4">
+                                <input class="form-control" type="text" name="team[]" placeholder="Team 4">
                             </li>
                         </ul>
                     </div>
                     <div class="col-md-5"><h2>Group 2</h2>
                         <ul class="list-unstyled">
                             <li>
-                                <input type="text" name="team[]" placeholder="Team 5">
+                                <input class="form-control" type="text" name="team[]" placeholder="Team 5">
                             </li>
                             <li>
-                                <input type="text" name="team[]" placeholder="Team 6">
+                                <input class="form-control" type="text" name="team[]" placeholder="Team 6">
                             </li>
                             <li>
-                                <input type="text" name="team[]" placeholder="Team 7">
+                                <input class="form-control" type="text" name="team[]" placeholder="Team 7">
                             </li>
                             <li>
-                                <input type="text" name="team[]" placeholder="Team 8">
+                                <input class="form-control" type="text" name="team[]" placeholder="Team 8">
                             </li>
                         </ul>
                     </div>

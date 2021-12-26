@@ -94,6 +94,7 @@ if(createGroups){
             input.setAttribute("type", "text")
             input.setAttribute("name", "team[]")
             input.setAttribute("placeholder", "Team " + i)
+            input.setAttribute("class", "form-control")
             let inputLi = document.createElement("li");
             inputLi.appendChild(input)
             groups[group-1].appendChild(inputLi)
