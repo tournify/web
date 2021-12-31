@@ -7,7 +7,7 @@ on:
       - main
 
 env:
-  IMAGE: ${{ github.event.repository.name }}
+  IMAGE: tournify-web
 
 jobs:
   deploy:
@@ -46,4 +46,4 @@ jobs:
 
       - name: Deploy
         run: |-
-          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd /var/www/${{ github.event.repository.name }}; docker-compose down; supervisorctl restart $IMAGE"
+          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd /var/www/tournify-web; docker-compose down; supervisorctl restart $IMAGE"
