@@ -1,6 +1,19 @@
 # Tournify
 
-This is the web application for [Tournify.io](https://tournify.io)(English) and the corresponding Swedish site [Turnering.io](https://turnering.io).
+This is the web application for [Tournify.io](https://www.tournify.io) (English) and the corresponding Swedish site [Turnering.io](https://www.turnering.io).
+
+Current features
+ - Group tournament creation
+
+Future features
+ - Elimination Tournaments
+ - Double Elimination Tournaments
+ - An API for registered users
+ - Ability to see previous tournaments
+ - Admin statistics
+ - UI customization to personalize tournament pages
+
+This project is based on the [Golang base project](https://github.com/uberswe/golang-base-project) and uses the [Tournify](https://github.com/tournify/tournify) package to create tournaments.
 
 ## Contributions
 
