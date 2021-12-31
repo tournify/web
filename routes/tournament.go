@@ -2,11 +2,14 @@ package routes
 
 import (
 	"fmt"
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/gosimple/slug"
 	"github.com/nicksnyder/go-i18n/v2/i18n"
 	"github.com/tournify/tournify"
+	"github.com/tournify/web/middleware"
 	"github.com/tournify/web/models"
+	"github.com/tournify/web/util"
 	"gorm.io/gorm"
 	"log"
 	"net/http"
@@ -25,6 +28,7 @@ type TournamentViewPageData struct {
 	TournamentName string
 	TournamentSlug string
 	Groups         map[int]TournamentViewGroup
+	CanEdit        bool
 }
 
 type TournamentViewGroup struct {
@@ -102,6 +106,7 @@ func (controller Controller) TournamentCreatePost(c *gin.Context) {
 			c.HTML(http.StatusBadRequest, "tournament-create.html", pd)
 			return
 		}
+
 		_, err3 := strconv.Atoi(elimCount)
 		if err3 != nil {
 			log.Println(err3)
@@ -212,13 +217,109 @@ func (controller Controller) TournamentCreatePost(c *gin.Context) {
 			name = "Tournament " + time.Now().Format("2006-01-02 15:04:05")
 		}
 		slugString := slug.Make(name)
+		// TODO the tournament should be related to the current user or session, alternatively a new session should be created
 		tournamentModel := models.Tournament{
 			Name:    name,
 			Slug:    controller.createUniqueTournamentSlug(slugString, 0),
 			Type:    0,
 			Privacy: visibilityInt,
 		}
-		res := controller.db.Save(&tournamentModel)
+
+		if isAuthenticated(c) {
+			log.Println("authenticated user")
+			userID, exists := c.Get(middleware.UserIDKey)
+
+			if exists {
+				userIDInt, ok := userID.(uint)
+				if ok {
+					userModel := models.User{}
+					userModel.ID = userIDInt
+					res := controller.db.Where(&userModel).First(&userModel)
+					if res.Error != nil {
+						log.Println(res.Error)
+						pd.Messages = append(pd.Messages, Message{
+							Type:    "error",
+							Content: "Could not create tournament, please try again or contact support.",
+						})
+						c.HTML(http.StatusBadRequest, "tournament-create.html", pd)
+						return
+					}
+
+					// Associate the user to the tournament
+					tournamentModel.Users = append(tournamentModel.Users, userModel)
+				}
+			} else {
+				// This should never happen, but we log it so that we might see it if it does happen for some reason
+				log.Println("userID doesn't exist but user is authenticated")
+			}
+		} else if isUnauthenticatedSession(c) {
+			log.Println("unauthenticated session")
+			sessionID, exists := c.Get(middleware.SessionIDKey)
+
+			if exists {
+				sessionIDInt, ok := sessionID.(uint)
+				if ok {
+					sessionModel := models.Session{}
+					sessionModel.ID = sessionIDInt
+					res := controller.db.Where(&sessionModel).First(&sessionModel)
+					if res.Error != nil {
+						log.Println(res.Error)
+						pd.Messages = append(pd.Messages, Message{
+							Type:    "error",
+							Content: "Could not create tournament, please try again or contact support.",
+						})
+						c.HTML(http.StatusBadRequest, "tournament-create.html", pd)
+						return
+					}
+
+					// Associate the user to the tournament
+					tournamentModel.Sessions = append(tournamentModel.Sessions, sessionModel)
+				}
+			} else {
+				// This should never happen, but we log it so that we might see it if it does happen for some reason
+				log.Println("userID doesn't exist but user is authenticated")
+			}
+		} else {
+			log.Println("no session")
+			// Generate a ULID for the current session
+			sessionIdentifier := util.GenerateULID()
+
+			ses := models.Session{
+				Identifier: sessionIdentifier,
+			}
+
+			// Session is valid for 30 days
+			ses.ExpiresAt = time.Now().Add(time.Hour * 24 * 30)
+
+			res := controller.db.Save(&ses)
+			if res.Error != nil {
+				log.Println(res.Error)
+				pd.Messages = append(pd.Messages, Message{
+					Type:    "error",
+					Content: "Could not create tournament, please try again or contact support.",
+				})
+				c.HTML(http.StatusBadRequest, "tournament-create.html", pd)
+				return
+			}
+
+			session := sessions.Default(c)
+			session.Set(middleware.SessionIdentifierKey, sessionIdentifier)
+
+			err = session.Save()
+			if err != nil {
+				log.Println(res.Error)
+				pd.Messages = append(pd.Messages, Message{
+					Type:    "error",
+					Content: "Could not create tournament, please try again or contact support.",
+				})
+				c.HTML(http.StatusBadRequest, "tournament-create.html", pd)
+				return
+			}
+
+			tournamentModel.Sessions = append(tournamentModel.Sessions, ses)
+		}
+
+		res := controller.db.Session(&gorm.Session{FullSaveAssociations: true}).Save(&tournamentModel)
 		if res.Error != nil {
 			pd.Messages = append(pd.Messages, Message{
 				Type:    "error",
@@ -404,6 +505,7 @@ func (controller Controller) TournamentView(c *gin.Context) {
 
 	pd.TournamentSlug = t.Slug
 	pd.TournamentName = t.Name
+	pd.CanEdit = canEditTournament(c, t.ID)
 
 	var err error
 	pd.Groups, err = controller.getGroupTournamentStats(t)

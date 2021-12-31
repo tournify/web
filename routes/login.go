@@ -91,7 +91,7 @@ func (controller Controller) LoginPost(c *gin.Context) {
 
 	// Session is valid for 1 hour
 	ses.ExpiresAt = time.Now().Add(time.Hour)
-	ses.UserID = user.ID
+	ses.UserID = &user.ID
 
 	res = controller.db.Save(&ses)
 	if res.Error != nil {

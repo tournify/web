@@ -6,6 +6,7 @@ import (
 	"github.com/nicksnyder/go-i18n/v2/i18n"
 	"github.com/tournify/web/config"
 	"github.com/tournify/web/middleware"
+	"github.com/tournify/web/models"
 	"gorm.io/gorm"
 	"strings"
 	"time"
@@ -58,10 +59,41 @@ func isAuthenticated(c *gin.Context) bool {
 	return exists
 }
 
+func isUnauthenticatedSession(c *gin.Context) bool {
+	_, userIDExists := c.Get(middleware.UserIDKey)
+	_, sessionIDExists := c.Get(middleware.SessionIDKey)
+	return !userIDExists && sessionIDExists
+}
+
 func isAdmin(c *gin.Context) bool {
 	_, exists := c.Get(middleware.UserIDKey)
 	role, roleExists := c.Get(middleware.UserRoleKey)
 	return exists && roleExists && role == "admin"
+}
+
+func canEditTournament(c *gin.Context, tournamentID uint) bool {
+	userTournaments, userTournamentsExists := c.Get(middleware.UserTournamentsKey)
+	if userTournamentsExists && userTournaments != nil {
+		if _, ok := userTournaments.([]models.Tournament); ok {
+			for _, t := range userTournaments.([]models.Tournament) {
+				if t.ID == tournamentID {
+					return true
+				}
+			}
+		}
+	} else {
+		sessionTournaments, sessionTournamentsExists := c.Get(middleware.SessionTournamentsKey)
+		if sessionTournamentsExists && sessionTournaments != nil {
+			if _, ok := sessionTournaments.([]models.Tournament); ok {
+				for _, t := range sessionTournaments.([]models.Tournament) {
+					if t.ID == tournamentID {
+						return true
+					}
+				}
+			}
+		}
+	}
+	return false
 }
 
 func domainLanguage(c *gin.Context) string {

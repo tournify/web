@@ -17,10 +17,17 @@ func Session(db *gorm.DB) gin.HandlerFunc {
 			ses := models.Session{
 				Identifier: sessionIdentifier,
 			}
-			res := db.Where(&ses).Preload("User").Preload("Role").First(&ses)
+			// TODO if a user hasa large amount of tournaments we may need to optimize this later and not preload every tournament
+			res := db.Where(&ses).Preload("User.Tournaments").Preload("Tournaments").First(&ses)
 			if res.Error == nil && !ses.HasExpired() {
-				c.Set(UserIDKey, ses.User.ID)
-				c.Set(UserRoleKey, ses.User.Role.Label)
+				c.Set(SessionIDKey, ses.ID)
+				if ses.User != nil {
+					c.Set(UserIDKey, ses.User.ID)
+					c.Set(UserRoleKey, ses.User.Role.Label)
+					c.Set(UserTournamentsKey, ses.User.Tournaments)
+				} else {
+					c.Set(SessionTournamentsKey, ses.Tournaments)
+				}
 			} else {
 				log.Println(res.Error)
 			}

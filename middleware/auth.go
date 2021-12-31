@@ -7,7 +7,10 @@ import (
 )
 
 const UserIDKey = "UserID"
+const SessionIDKey = "SessionID"
 const UserRoleKey = "UserRole"
+const UserTournamentsKey = "UserTournaments"
+const SessionTournamentsKey = "SessionTournaments"
 
 func Auth() gin.HandlerFunc {
 	return func(c *gin.Context) {

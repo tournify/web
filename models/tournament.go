@@ -17,7 +17,8 @@ type Tournament struct {
 	Type        int
 	Privacy     int // Public, Private, Anyone with link
 	Options     []TournamentOption
-	Users       []TournamentUser
+	Users       []User    `gorm:"many2many:tournament_users;" json:"users"`
+	Sessions    []Session `gorm:"many2many:session_tournaments;" json:"sessions"`
 }
 
 type TournamentOption struct {
@@ -26,11 +27,4 @@ type TournamentOption struct {
 	Value        string
 	TournamentID uint
 	Tournament   Tournament
-}
-
-type TournamentUser struct {
-	Tournament   Tournament
-	User         User
-	TournamentID uint
-	UserID       uint
 }

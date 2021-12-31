@@ -64,7 +64,6 @@ func migrateDatabase(db *gorm.DB) error {
 		&models.Subscriber{},
 		&models.Team{},
 		&models.TournamentOption{},
-		&models.TournamentUser{},
 		&models.PermissionRole{})
 
 	seed(db)

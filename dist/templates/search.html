@@ -6,9 +6,9 @@
         {{ template "messages.html" . }}
         {{ range $result := .Results }}
         <div class="search-result">
-            <h3>{{ $result.Title }}</h3>
+            <h3>{{ $result.Name }}</h3>
             <p>{{ $result.Description }}</p>
-            <p><a href="{{ $result.URL }}">{{ $result.URL }}</a></p>
+            <p><a href="/tournament/{{ $result.Slug }}">View Tournament</a></p>
         </div>
         {{ end }}
     </div>

@@ -116,15 +116,20 @@ func Run() {
 	noAuthPost.POST("/user/password/forgot", controller.ForgotPasswordPost)
 	noAuthPost.POST("/user/password/reset/:token", controller.ResetPasswordPost)
 
-	admin := r.Group("/")
-	admin.Use(middleware.Auth())
-	admin.Use(middleware.Sensitive())
+	auth := r.Group("/")
+	auth.Use(middleware.Auth())
+	auth.Use(middleware.Sensitive())
 
-	admin.GET("/admin", controller.Admin)
-	admin.POST("/admin", controller.Admin)
+	auth.GET("/auth", controller.Admin)
+	auth.POST("/auth", controller.Admin)
+	auth.GET("/logout", controller.Logout)
+	auth.GET("/dashboard", controller.NoRoute)
+
+	admin := auth.Group("/")
+	admin.Use(middleware.Admin())
+	admin.GET("/admin", controller.NoRoute)
 	admin.GET("/blog/create", controller.BlogCreate)
 	admin.POST("/blog/create", controller.BlogCreatePost)
-	admin.GET("/logout", controller.Logout)
 
 	err = r.Run(conf.Port)
 	if err != nil {

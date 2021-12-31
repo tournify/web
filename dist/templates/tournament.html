@@ -47,6 +47,7 @@
         <div class="table-responsive">
             <table class="table table-hover table-sm">
                 {{ $tournamentSlug := .TournamentSlug }}
+                {{ $canEdit := .CanEdit }}
                 {{ range $index, $group := .Groups }}
                 <thead>
                 <tr>
@@ -70,13 +71,21 @@
                             {{ $game.GetHomeTeamName }}
                         </td>
                         <td>
+                            {{ if $canEdit }}
                             <input class="small-input" type="number" name="home" value="{{ $game.GetHomeScore.GetPoints }}">
+                            {{ else }}
+                            {{ $game.GetHomeScore.GetPoints }}
+                            {{ end }}
                         </td>
                         <td>
                             {{ $game.GetAwayTeamName }}
                         </td>
                         <td>
+                            {{ if $canEdit }}
                             <input class="small-input" type="number" name="away" value="{{ $game.GetAwayScore.GetPoints }}">
+                            {{ else }}
+                            {{ $game.GetAwayScore.GetPoints }}
+                            {{ end }}
                         </td>
                     </tr>
                 {{ end }}

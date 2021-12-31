@@ -80,6 +80,13 @@ func (controller Controller) APITournamentGameUpdate(c *gin.Context) {
 		return
 	}
 
+	if !canEditTournament(c, t.ID) {
+		c.JSON(http.StatusUnauthorized, APIError{
+			Error: "Could not update the requested tournament.",
+		})
+		return
+	}
+
 	g := models.Game{
 		TournamentID: t.ID,
 	}
