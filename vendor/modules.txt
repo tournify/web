@@ -40,6 +40,9 @@ github.com/gorilla/sessions
 github.com/gosimple/slug
 # github.com/gosimple/unidecode v1.0.1
 github.com/gosimple/unidecode
+# github.com/hako/durafmt v0.0.0-20210608085754-5c1018a4e16b
+## explicit
+github.com/hako/durafmt
 # github.com/jackc/chunkreader/v2 v2.0.1
 github.com/jackc/chunkreader/v2
 # github.com/jackc/pgconn v1.10.1

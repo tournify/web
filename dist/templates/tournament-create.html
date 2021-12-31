@@ -7,7 +7,7 @@
         {{ template "messages.html" . }}
 
 
-        <form method="post" action="/tournament/create">
+        <form method="post" action="/tournament/create" id="create-tournament-form">
             <div class="row">
                 <div class="col-sm">
                     <label for="tourtype">Type</label>
@@ -25,7 +25,7 @@
                         <input type="text" class="form-control" id="tourname" name="tourname"
                                value="{{ .TournamentName }}">
                     </div>
-                    <label for="teamcount">Number of teams (Limited to 10 without an account.)</label>
+                    <label for="teamcount">Number of teams (Max 64)</label>
                     <div class="input-group spinner">
                         <input type="number" class="form-control" id="teamcount" name="teamcount" value="8">
                     </div>
@@ -80,7 +80,7 @@
                         <button name="mix" class="btn btn-secondary" id="mix">Mix teams</button>
                     </div>
                     <div class="input-group mb-3">
-                        <button type="submit" class="btn btn-primary">Create</button>
+                        <button type="submit" class="btn btn-primary" id="create">Create</button>
                     </div>
                     <p>By clicking create you agree to the use of cookies on this website. Please note that it may take a moment to generate the tournament after clicking create.</p>
                 </div>

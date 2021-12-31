@@ -126,3 +126,32 @@ main > .container {
 .small-input {
     max-width:50px
 }
+
+.gamesfeed {
+    list-style-type: none;
+    margin: 2em 5em;
+    padding: 0 0 0 1.5em;
+    border-left: 1px solid #ccc;
+}
+
+.gamesfeed li {
+   border: 1px solid #ccc;
+   padding: 1em 1em 1.5em 3em;
+   margin: 1em;
+   display: block;
+   position: relative;
+}
+
+.gamesfeed li .icon {
+    height: 30px;
+    width: 30px;
+    padding: 8px;
+    color: #fff;
+    box-sizing: border-box;
+    display: block;
+    background: #0A0;
+    position: absolute;
+    left: -3.5em;
+    top: 0.5em;
+    border-radius: 50%;
+}

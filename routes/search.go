@@ -32,10 +32,8 @@ func (controller Controller) Search(c *gin.Context) {
 
 	var results []models.Tournament
 
-	log.Println(search)
 	search = fmt.Sprintf("%s%s%s", "%", search, "%")
 
-	log.Println(search)
 	res := controller.db.Where("privacy = ? AND (name LIKE ? OR description LIKE ?)", models.TournamentPrivacyPublic, search, search).Limit(100).Find(&results)
 
 	if res.Error != nil || len(results) == 0 {

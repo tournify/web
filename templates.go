@@ -1,16 +1,25 @@
-// Package baseproject is the main package of tournify which defines all routes and database connections and settings, the glue to the entire application
+// Package web is the main package of tournify which defines all routes and database connections and settings, the glue to the entire application
 package web
 
 import (
+	"github.com/hako/durafmt"
 	"html/template"
 	"io/fs"
 	"io/ioutil"
 	"strings"
+	"time"
 )
 
 func loadTemplates() (*template.Template, error) {
 	var err4 error
 	t := template.New("")
+	t = t.Funcs(template.FuncMap{
+		"timeToAgo": func(timeToCompare time.Time) string {
+			dur := time.Now().Sub(timeToCompare)
+			duration := durafmt.Parse(dur)
+			return duration.LimitFirstN(1).String()
+		},
+	})
 	err := fs.WalkDir(staticFS, ".", func(path string, d fs.DirEntry, err error) error {
 		if d.IsDir() {
 			return nil
@@ -32,5 +41,6 @@ func loadTemplates() (*template.Template, error) {
 		}
 		return nil
 	})
+
 	return t, err
 }

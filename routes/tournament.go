@@ -158,11 +158,10 @@ func (controller Controller) TournamentCreatePost(c *gin.Context) {
 			return
 		}
 
-		// TODO change this with paid users
-		if len(teams) > 10 {
+		if len(teams) > 64 {
 			pd.Messages = append(pd.Messages, Message{
 				Type:    "error",
-				Content: "Up to 10 teams is currently supported.",
+				Content: "Up to 64 teams is currently supported.",
 			})
 			c.HTML(http.StatusBadRequest, "tournament-create.html", pd)
 			return
@@ -390,10 +389,11 @@ func (controller Controller) TournamentCreatePost(c *gin.Context) {
 		teamCount := 0
 		for _, team := range teams {
 			teamCount++
+			teamSlug := slug.Make(team)
 			if team == "" {
 				team = fmt.Sprintf("Team %d", teamCount)
+				teamSlug = slug.Make(team) + "-" + util.RandomString(4)
 			}
-			teamSlug := slug.Make(team)
 			teamModel := models.Team{
 				Name: team,
 				Slug: controller.createUniqueTeamSlug(teamSlug, 0),
@@ -422,7 +422,7 @@ func (controller Controller) TournamentCreatePost(c *gin.Context) {
 
 		for i, group := range tournament.GetGroups() {
 			groupName := fmt.Sprintf("Group %d", i+1)
-			groupSlug := slug.Make(groupName)
+			groupSlug := slug.Make(groupName) + "-" + util.RandomString(4)
 			groupModel := models.Group{
 				Name:         groupName,
 				Slug:         controller.createUniqueGroupSlug(groupSlug, 0),
@@ -448,7 +448,7 @@ func (controller Controller) TournamentCreatePost(c *gin.Context) {
 						})
 					}
 					gameName := fmt.Sprintf("Game %d", x+1)
-					gameSlug := slug.Make(gameName)
+					gameSlug := slug.Make(gameName) + "-" + util.RandomString(4)
 					gameModel := models.Game{
 						Name:         gameName,
 						Slug:         controller.createUniqueGameSlug(gameSlug, 0),

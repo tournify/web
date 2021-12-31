@@ -15,6 +15,8 @@ if(createGroups){
     let advancedLink = document.getElementById("advlnk")
     let advancedArea = document.getElementById("advanced")
     let mixTeamsButton = document.getElementById("mix")
+    let createButton = document.getElementById("create")
+    let createForm = document.getElementById("create-tournament-form")
     tourType.addEventListener('change', renderCreateGroups);
     teamCount.addEventListener('change', renderCreateGroups);
     groupCount.addEventListener('change', renderCreateGroups);
@@ -39,6 +41,13 @@ if(createGroups){
         });
     })
 
+    createForm.addEventListener('submit', function (e) {
+        createButton.disabled = true
+        createButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>\n' +
+            'Loading...'
+        return true
+    })
+
     renderCreateGroups()
 
     function renderCreateGroups(){
@@ -55,9 +64,10 @@ if(createGroups){
             extraGroupFields.style.display = "none"
         }
         let teamCountInt = parseInt(teamCount.value, 10)
-        if (teamCountInt > 10) {
-            teamCountInt = 10
-            teamCount.value = 10
+        let maxTeams = 64
+        if (teamCountInt > maxTeams) {
+            teamCountInt = maxTeams
+            teamCount.value = maxTeams
         }
         if (teamCountInt < 2) {
             teamCountInt = 2

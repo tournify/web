@@ -18,8 +18,16 @@
         </div>
     </article>
     <div class="container">
+        <h2>Recent Tournaments</h2>
+        <ol id="gamesfeed" class="gamesfeed">
+            {{ range $tournament := .RecentTournaments }}
+            <li><i class="fa fa-trophy icon"></i> The tournament <a href="/tournament/{{ $tournament.Slug }}">{{ $tournament.Name }}</a> was created {{ timeToAgo $tournament.CreatedAt }} ago.</li>
+            {{ end }}
+        </ol>
+    </div>
+    <div class="container">
         <div class="subscribe-form">
-        <h3 class="mb-3 mt-5">{{ .SubscribeToOurNewsletter }}</h3>
+        <h2 class="mb-3 mt-5">{{ .SubscribeToOurNewsletter }}</h2>
         <div class="subscribe-form">
             <form method="post" action="/subscribe" class="d-flex">
             <input id="email" type="text" name="email" class="form-control" placeholder="{{ .Email }}">
