@@ -15,6 +15,14 @@ Future features
 
 This project is based on the [Golang base project](https://github.com/uberswe/golang-base-project) and uses the [Tournify](https://github.com/tournify/tournify) package to create tournaments.
 
+## Docker
+
+I recommend copying `docker-compose.yml` and creating a `docker-compose.local.yml` file where you can make changes. Then run the following command:
+
+```bash
+docker-compose -f docker-compose.yml -f docker-compose.local.yml up --build
+```
+
 ## Contributions
 
 Contributions are welcome and greatly appreciated. Please note that I am not looking to add any more features to this project but I am happy to take care of bugfixes, updates and other suggestions. If you have a question or suggestion please feel free to [open an issue](https://github.com/tournify/web/issues/new). To contribute code, please fork this repository, make your changes on a separate branch and then [open a pull request](https://github.com/tournify/web/compare).
