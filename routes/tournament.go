@@ -216,7 +216,6 @@ func (controller Controller) TournamentCreatePost(c *gin.Context) {
 			name = "Tournament " + time.Now().Format("2006-01-02 15:04:05")
 		}
 		slugString := slug.Make(name)
-		// TODO the tournament should be related to the current user or session, alternatively a new session should be created
 		tournamentModel := models.Tournament{
 			Name:    name,
 			Slug:    controller.createUniqueTournamentSlug(slugString, 0),
@@ -449,10 +448,14 @@ func (controller Controller) TournamentCreatePost(c *gin.Context) {
 					}
 					gameName := fmt.Sprintf("Game %d", x+1)
 					gameSlug := slug.Make(gameName) + "-" + util.RandomString(4)
+					homeTeamID := uint(game.GetHomeTeam().GetID())
+					awayTeamID := uint(game.GetAwayTeam().GetID())
 					gameModel := models.Game{
 						Name:         gameName,
 						Slug:         controller.createUniqueGameSlug(gameSlug, 0),
 						TournamentID: tournamentModel.ID,
+						HomeTeamID:   &homeTeamID,
+						AwayTeamID:   &awayTeamID,
 						GroupID:      &groupModel.ID,
 						Teams:        gameTeams,
 					}

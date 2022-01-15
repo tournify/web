@@ -12,6 +12,8 @@ type Game struct {
 	Slug         string     `gorm:"uniqueIndex;size:256;" json:"slug"`
 	Keywords     string     `json:"-"`
 	Description  string     `json:"-"`
+	HomeTeamID   *uint      `json:"home_team"`
+	AwayTeamID   *uint      `json:"away_team"`
 	Teams        []Team     `gorm:"many2many:game_teams;" json:"teams"`
 	Tournament   Tournament `json:"-"`
 	TournamentID uint       `json:"-"`
@@ -59,10 +61,24 @@ func (g *Game) GetHomeTeam() tournify.TeamInterface {
 	if len(g.Teams) < 1 {
 		g.Teams = append(g.Teams, Team{})
 	}
+	if g.HomeTeamID != nil {
+		for i, t := range g.Teams {
+			if int(t.ID) == int(*g.HomeTeamID) {
+				return &g.Teams[i]
+			}
+		}
+	}
 	return &g.Teams[0]
 }
 
 func (g *Game) GetHomeTeamName() string {
+	if g.HomeTeamID != nil {
+		for i, t := range g.Teams {
+			if int(t.ID) == int(*g.HomeTeamID) {
+				return g.Teams[i].Name
+			}
+		}
+	}
 	if len(g.Teams) >= 1 {
 		return g.Teams[0].Name
 	}
@@ -75,6 +91,7 @@ func (g *Game) SetHomeTeam(t tournify.TeamInterface) {
 		g.Teams = append(g.Teams, Team{})
 	}
 	team := t.(*Team)
+	g.HomeTeamID = &team.ID
 	g.Teams[0] = *team
 }
 
@@ -85,10 +102,24 @@ func (g *Game) GetAwayTeam() tournify.TeamInterface {
 	} else if len(g.Teams) < 2 {
 		g.Teams = append(g.Teams, Team{})
 	}
+	if g.AwayTeamID != nil {
+		for i, t := range g.Teams {
+			if int(t.ID) == int(*g.AwayTeamID) {
+				return &g.Teams[i]
+			}
+		}
+	}
 	return &g.Teams[1]
 }
 
 func (g *Game) GetAwayTeamName() string {
+	if g.AwayTeamID != nil {
+		for i, t := range g.Teams {
+			if int(t.ID) == int(*g.AwayTeamID) {
+				return g.Teams[i].Name
+			}
+		}
+	}
 	if len(g.Teams) >= 2 {
 		return g.Teams[1].Name
 	}
@@ -103,6 +134,7 @@ func (g *Game) SetAwayTeam(t tournify.TeamInterface) {
 		g.Teams = append(g.Teams, Team{})
 	}
 	team := t.(*Team)
+	g.AwayTeamID = &team.ID
 	g.Teams[1] = *team
 }
 
@@ -110,6 +142,13 @@ func (g *Game) SetAwayTeam(t tournify.TeamInterface) {
 func (g *Game) GetHomeScore() tournify.ScoreInterface {
 	if len(g.Scores) < 1 {
 		g.Scores = append(g.Scores, Score{})
+	}
+	if g.HomeTeamID != nil {
+		for i, s := range g.Scores {
+			if int(s.TeamID) == int(*g.HomeTeamID) {
+				return &g.Scores[i]
+			}
+		}
 	}
 	return &g.Scores[0]
 }
@@ -120,6 +159,13 @@ func (g *Game) GetAwayScore() tournify.ScoreInterface {
 		g.Scores = append(g.Scores, Score{}, Score{})
 	} else if len(g.Scores) < 2 {
 		g.Scores = append(g.Scores, Score{})
+	}
+	if g.AwayTeamID != nil {
+		for i, s := range g.Scores {
+			if int(s.TeamID) == int(*g.AwayTeamID) {
+				return &g.Scores[i]
+			}
+		}
 	}
 	return &g.Scores[1]
 }
@@ -144,7 +190,7 @@ func (g *Game) GetScores() []tournify.ScoreInterface {
 
 // Print writes game details to stdout
 func (g *Game) Print() string {
-	return fmt.Sprintf("Game ID: %d, HomeTeam: %d, AwayTeam: %d, HomeScore: %.2f, AwayScore: %.2f\n",
+	return fmt.Sprintf("Game ID: %d, HomeTeamID: %d, AwayTeamID: %d, HomeScore: %.2f, AwayScore: %.2f\n",
 		g.GetID(),
 		g.GetHomeTeam().GetID(),
 		g.GetAwayTeam().GetID(),
