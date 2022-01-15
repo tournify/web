@@ -13,7 +13,6 @@
                 <thead>
                 <tr>
                     <th scope="col">Group {{ $index }}</th>
-                    <th scope="col">Team</th>
                     <th scope="col">Played</th>
                     <th scope="col">Wins</th>
                     <th scope="col">Ties</th>
@@ -26,7 +25,6 @@
                 <tbody>
                 {{ range $stat := $group.Stats }}
                 <tr>
-                    <td></td>
                     <th scope="row">{{ $stat.GetTeamName }}</th>
                     <td>{{ $stat.GetPlayed }}</td>
                     <td>{{ $stat.GetWins }}</td>
@@ -52,7 +50,6 @@
                 <thead>
                 <tr>
                     <th scope="col">Group {{ $index }}</th>
-                    <th scope="col">Game</th>
                     <th scope="col" colspan="2">Home Team</th>
                     <th scope="col" colspan="2">Away Team</th>
                 </tr>
@@ -60,8 +57,6 @@
                 <tbody>
                 {{ range $game := $group.Games }}
                     <tr>
-                        <td>
-                        </td>
                         <th scope="row">
                             {{ $game.Name }}
                             <input type="hidden" value="{{ $game.GetID }}" name="id">
