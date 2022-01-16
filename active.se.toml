@@ -1,6 +1,22 @@
+[activate_title]
+hash = "sha1-92ef08325a4813563a3110359906076374683282"
+other = "Aktivera"
+
 [admin]
 hash = "sha1-4e7afebcfbae000b22c7c85e5560f89a2a0280b4"
 other = "Admin"
+
+[admin_title]
+hash = "sha1-4e7afebcfbae000b22c7c85e5560f89a2a0280b4"
+other = "Admin"
+
+[ago]
+hash = "sha1-f03c0a59c59454eea25ccc9b83f19b79a7c85f45"
+other = "sedan"
+
+[all_rights_reserved]
+hash = "sha1-3639ec0f50b0f9a9a60809dc558a8b5d72fef67b"
+other = "All rights reserved."
 
 [blog]
 hash = "sha1-0b9d2b2362bc33581ba11fddcb0cf0590ebd3a7a"
@@ -15,6 +31,10 @@ hash = "sha1-94626f087a9f73af3dbe9ada8e2199fa0fa8c076"
 other = "Skapa Blogg Inlägg"
 
 [create_tournament]
+hash = "sha1-44407b4e2922be9c2bb52f010772f2f2c1068e49"
+other = "Skapa Turnering"
+
+[create_tournament_title]
 hash = "sha1-44407b4e2922be9c2bb52f010772f2f2c1068e49"
 other = "Skapa Turnering"
 
@@ -34,6 +54,10 @@ other = "Enkelt att skapa turneringar"
 hash = "sha1-84add5b2952787581cb9a8851eef63d1ec75d22b"
 other = "E-post"
 
+[forgot_password_title]
+hash = "sha1-f99d98e85f9064a9b39c10c0d10fa2151df4a764"
+other = "Glömt Ditt Lösenord?"
+
 [fork_this_project_on]
 hash = "sha1-14d277545460f1796542547a5cf2151fc433f917"
 other = "Skapa en fork av detta projekt på"
@@ -46,6 +70,10 @@ other = "Hem"
 hash = "sha1-4e5a2893bdcc7d239c1db72e4c4ffbe4bea73174"
 other = "Logga in"
 
+[login_title]
+hash = "sha1-4e5a2893bdcc7d239c1db72e4c4ffbe4bea73174"
+other = "Logga in"
+
 [logout]
 hash = "sha1-e43d612e11f1568f2373e719d4c4b08dcecdc7cc"
 other = "Logga ut"
@@ -53,6 +81,10 @@ other = "Logga ut"
 [no_spam_notice]
 hash = "sha1-b6f8cf81201bb373ba7292d2918eb4e084782dde"
 other = "Fyll i din e-post om du vill få nyheter från oss. Vi skickar aldrig spam och lämnar aldrig ut din e-post till tredje part."
+
+[not_found_title]
+hash = "sha1-5b65037351caeb0e5a48d963d7ffa88d0271d546"
+other = "404 Sidan Finns Tnte"
 
 [optional]
 hash = "sha1-0c6c4102d4dfec3b1aa41117e0e344046c58a151"
@@ -62,11 +94,35 @@ other = "Valfritt"
 hash = "sha1-9db108ba6b7f6571356060929e37dae65878cfca"
 other = "Integritetspolicy"
 
+[privacy_policy_title]
+hash = "sha1-9db108ba6b7f6571356060929e37dae65878cfca"
+other = "Integritetspolicy"
+
+[recent_tournaments]
+hash = "sha1-ef4016fa589e84e154f5828386f2d08741c1efea"
+other = "Senaste Turneringar"
+
 [register]
 hash = "sha1-d672995a14650d0e018026b64f297663d8c71c8d"
 other = "Registrera"
 
+[register_title]
+hash = "sha1-d672995a14650d0e018026b64f297663d8c71c8d"
+other = "Registrera"
+
+[resend_activation_email_title]
+hash = "sha1-2a765254a16b8d77c89125cabc42996f28dac3e6"
+other = "Skicka aktiverings mail igen"
+
+[reset_password_title]
+hash = "sha1-3fb75e3bfe4de94eb5198656fa9de95352dab915"
+other = "Återställ Lösenord"
+
 [search]
+hash = "sha1-bce06414177f72ab70e6387b6af9f8ceef0d6049"
+other = "Sök"
+
+[search_title]
 hash = "sha1-bce06414177f72ab70e6387b6af9f8ceef0d6049"
 other = "Sök"
 
@@ -94,6 +150,22 @@ other = "Prenumerera på vårt nyhetsbrev"
 hash = "sha1-0c8a9a95e21aeb403402ed64338810d787cc5f91"
 other = "Användarvillkor"
 
+[terms_of_service_title]
+hash = "sha1-0c8a9a95e21aeb403402ed64338810d787cc5f91"
+other = "Användarvillkor"
+
+[the_tournament]
+hash = "sha1-fa0951a85530e2462135420791399a9c8f0e3e22"
+other = "Turneringen"
+
 [tournament_name]
-hash = "sha1-5d357591bb4332ae0e961a131b4df44460eedb42"
-other = "Turneringens namn"
+hash = "sha1-0398e81b1c642bafc033ab06dee2fb033ad93481"
+other = "Turneringens Namn"
+
+[tournament_title]
+hash = "sha1-a2c1d828e2d3aabee7adbb7b9fc864cf31fcfb4d"
+other = "Turnering"
+
+[was_created]
+hash = "sha1-f55f6aa6e0593da8cc833e4e531d061f51568d34"
+other = "skapades för"
