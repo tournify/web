@@ -2,13 +2,14 @@
 
 <main class="flex-shrink-0">
     <div class="container">
-        <h1 class="mt-5">Search Results</h1>
+        <h1 class="mt-5">{{ call .Trans "Search Results" }}</h1>
         {{ template "messages.html" . }}
+        {{ $trans := .Trans}}
         {{ range $result := .Results }}
         <div class="search-result">
             <h3>{{ $result.Name }}</h3>
             <p>{{ $result.Description }}</p>
-            <p><a href="/tournament/{{ $result.Slug }}">View Tournament</a></p>
+            <p><a href="/tournament/{{ $result.Slug }}">{{ call $trans "View Tournament" }}</a></p>
         </div>
         {{ end }}
     </div>

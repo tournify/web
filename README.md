@@ -27,7 +27,7 @@ docker-compose -f docker-compose.yml -f docker-compose.local.yml up --build
 
 This project uses [go-i18n](https://github.com/nicksnyder/go-i18n) to handle translations. Only English and Swedish is currently supported but I would gladly add more languages if someone would like to contribute.
 
-To update languages first run `goi18n extract` to update `active.en.toml`. Then run `goi18n merge active.*.toml` to generate `translate.*.toml` which can then be translated. Finally run `goi18n merge active.*.toml translate.*.toml` to merge the translated files into the active files.
+To update languages first run `goi18n extract` to update `active.en.toml`. Then run `goi18n merge active.*.toml` to generate `translate.*.toml` which can then be translated. Finally, run `goi18n merge active.*.toml translate.*.toml` to merge the translated files into the active files.
 
 
 ## Contributions
