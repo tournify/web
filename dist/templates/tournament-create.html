@@ -10,56 +10,56 @@
         <form method="post" action="/tournament/create" id="create-tournament-form">
             <div class="row">
                 <div class="col-sm">
-                    <label for="tourtype">Type</label>
+                    <label for="tourtype">{{ call .Trans "Type" }}</label>
 
                     <div class="input-group">
                         <select class="form-control" name="tourtype" id="tourtype">
-                            <option value="0" SELECTED>Group</option>
-                            <option value="1" disabled>Elimination (coming soon)</option>
+                            <option value="0" SELECTED>{{ call .Trans "Group" }}</option>
+                            <option value="1" disabled>{{ call .Trans "Elimination" }} ({{ call .Trans "coming soon" }})</option>
                         </select>
                     </div>
 
-                    <label for="tourname">Name</label>
+                    <label for="tourname">{{ call .Trans "Name" }}</label>
 
                     <div class="input-group">
                         <input type="text" class="form-control" id="tourname" name="tourname"
                                value="{{ .TournamentName }}">
                     </div>
-                    <label for="teamcount">Number of teams (Max 64)</label>
+                    <label for="teamcount">{{ call .Trans "Number of teams (Max 64)" }}</label>
                     <div class="input-group spinner">
                         <input type="number" class="form-control" id="teamcount" name="teamcount" value="8">
                     </div>
                     <div id="extragroup">
-                        <label for="groupcount">Number of groups</label>
+                        <label for="groupcount">{{ call .Trans "Number of groups" }}</label>
 
                         <div class="input-group spinner">
                             <input type="number" class="form-control" id="groupcount" name="groupcount" value="2">
                         </div>
-                        <label for="meetcount">Number of meets</label>
+                        <label for="meetcount">{{ call .Trans "How many times should every team meet?" }}</label>
 
                         <div class="input-group spinner">
                             <input type="number" class="form-control" id="meetcount" name="meetcount" value="1">
                         </div>
-                        <label for="elimcount">How many teams are eliminated from each group?</label>
+                        <label for="elimcount">{{ call .Trans "How many teams are eliminated from each group?" }}</label>
 
                         <div class="input-group mb-3 spinner">
                             <input type="number" class="form-control" id="elimcount" name="elimcount" value="2">
                         </div>
 
-                        <span><a class="mb-3" id="advlnk" href="#">Advanced</a></span>
+                        <span><a class="mb-3" id="advlnk" href="#">{{ call .Trans "Advanced" }}</a></span>
                         <div id="advanced" style="display: none;">
 
-                            <label for="winpoints">Points for winning</label>
+                            <label for="winpoints">{{ call .Trans "Points for winning" }}</label>
                             <div class="input-group spinner">
                                 <input type="number" class="form-control" id="winpoints" name="winpoints" value="3">
                             </div>
 
-                            <label for="tiepoints">Points for a draw</label>
+                            <label for="tiepoints">{{ call .Trans "Points for a draw" }}</label>
                             <div class="input-group spinner">
                                 <input type="number" class="form-control" id="tiepoints" name="tiepoints" value="1">
                             </div>
 
-                            <label for="losspoints">Points for losing</label>
+                            <label for="losspoints">{{ call .Trans "Points for losing" }}</label>
                             <div class="input-group spinner">
                                 <input type="number" class="form-control" id="losspoints" name="losspoints" value="0">
                             </div>
@@ -67,22 +67,22 @@
                         </div>
 
                     </div>
-                    <label for="visibility">Visibility</label>
+                    <label for="visibility">{{ call .Trans "Visibility" }}</label>
 
                     <div class="input-group mb-3">
                         <select class="form-control" name="visibility" id="visibility">
-                            <option value="1" SELECTED>Public</option>
-                            <option value="2" disabled>Private (coming soon)</option>
-                            <option value="3" disabled>Visible with link (coming soon)</option>
+                            <option value="1" SELECTED>{{ call .Trans "Public" }}</option>
+                            <option value="2" disabled>{{ call .Trans "Private" }} ({{ call .Trans "coming soon" }})</option>
+                            <option value="3" disabled>{{ call .Trans "Visible with link" }} ({{ call .Trans "coming soon" }})</option>
                         </select>
                     </div>
                     <div class="input-group mb-3">
-                        <button name="mix" class="btn btn-secondary" id="mix">Mix teams</button>
+                        <button name="mix" class="btn btn-secondary" id="mix">{{ call .Trans "Mix teams" }}</button>
                     </div>
                     <div class="input-group mb-3">
-                        <button type="submit" class="btn btn-primary" id="create">Create</button>
+                        <button type="submit" class="btn btn-primary" id="create">{{ call .Trans "Create" }}</button>
                     </div>
-                    <p>By clicking create you agree to the use of cookies on this website. Please note that it may take a moment to generate the tournament after clicking create.</p>
+                    <p>{{ call .Trans "By clicking create you agree to the use of cookies on this website. Please note that it may take a moment to generate the tournament after clicking create." }}</p>
                 </div>
                 <div class="col-sm" id="create-groups">
                     <div class="col-md-5"><h2>Group 1</h2>

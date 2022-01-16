@@ -1,4 +1,5 @@
 {{ template "header.html" . }}
+{{ $trans := .Trans }}
 
 <main class="flex-shrink-0">
     <div class="container" id="view-tournament">
@@ -12,14 +13,14 @@
                 {{ range $index, $group := .Groups }}
                 <thead>
                 <tr>
-                    <th scope="col">Group {{ $index }}</th>
-                    <th scope="col">Played</th>
-                    <th scope="col">Wins</th>
-                    <th scope="col">Ties</th>
-                    <th scope="col">Lost</th>
+                    <th scope="col">{{ call $trans "Group" }} {{ $index }}</th>
+                    <th scope="col">{{ call $trans "Played" }}</th>
+                    <th scope="col">{{ call $trans "Wins" }}</th>
+                    <th scope="col">{{ call $trans "Ties" }}</th>
+                    <th scope="col">{{ call $trans "Lost" }}</th>
                     <th scope="col">+/-</th>
-                    <th scope="col">Diff</th>
-                    <th scope="col">Points</th>
+                    <th scope="col">{{ call $trans "Diff" }}</th>
+                    <th scope="col">{{ call $trans "Points" }}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -40,7 +41,7 @@
             </table>
         </div>
 
-        <h2>Games</h2>
+        <h2>{{ call $trans "Games" }}</h2>
 
         <div class="table-responsive">
             <table class="table table-hover table-sm">
@@ -49,9 +50,9 @@
                 {{ range $index, $group := .Groups }}
                 <thead>
                 <tr>
-                    <th scope="col">Group {{ $index }}</th>
-                    <th scope="col" colspan="2">Home Team</th>
-                    <th scope="col" colspan="2">Away Team</th>
+                    <th scope="col">{{ call $trans "Group" }} {{ $index }}</th>
+                    <th scope="col" colspan="2">{{ call $trans "Home Team" }}</th>
+                    <th scope="col" colspan="2">{{ call $trans "Away Team" }}</th>
                 </tr>
                 </thead>
                 <tbody>

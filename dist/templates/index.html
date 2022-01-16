@@ -3,38 +3,39 @@
 <main class="flex-shrink-0">
     <article class="welcome" id="welcome">
         <div class="create-tournament-form">
-        <h2><span>{{ .SiteNameFirst }}</span>{{ .SiteNameLast }}</h2>
-        <p>{{ .EasyToCreateTournaments }}</p>
+        <h2><span>{{ call .Trans "site_name_first" }}</span>{{ call .Trans "site_name_last" }}</h2>
+        <p>{{ call .Trans "Easy to create tournaments" }}</p>
 
         <form method="post" action="/tournament/create">
             <div class="form-floating">
                 <input type="text" name="tourname" id="floatingTournamentName" class="form-control">
-                <label for="floatingTournamentName">{{ .TournamentName }} ({{ .Optional }})</label>
+                <label for="floatingTournamentName">{{ call .Trans "Tournament Name"}} ({{ call .Trans "Optional" }})</label>
             </div>
             <div class="tournament-create-button">
-                <button type="submit" class="w-100 btn btn-lg btn-outline-light">{{ .Create }}</button>
+                <button type="submit" class="w-100 btn btn-lg btn-outline-light">{{ call .Trans "Create" }}</button>
             </div>
         </form>
         </div>
     </article>
     <div class="container">
-        <h2>Recent Tournaments</h2>
+        <h2>{{ call .Trans "Recent Tournaments" }}</h2>
         <ol id="gamesfeed" class="gamesfeed">
+            {{ $trans := .Trans }}
             {{ range $tournament := .RecentTournaments }}
-            <li><i class="fa fa-trophy icon"></i> The tournament <a href="/tournament/{{ $tournament.Slug }}">{{ $tournament.Name }}</a> was created {{ timeToAgo $tournament.CreatedAt }} ago.</li>
+            <li><i class="fa fa-trophy icon"></i> {{ call $trans "The tournament" }} <a href="/tournament/{{ $tournament.Slug }}">{{ $tournament.Name }}</a> {{ call $trans "was created" }} {{ timeToAgo $tournament.CreatedAt }} {{ call $trans "ago" }}.</li>
             {{ end }}
         </ol>
     </div>
     <div class="container">
         <div class="subscribe-form">
-        <h2 class="mb-3 mt-5">{{ .SubscribeToOurNewsletter }}</h2>
+        <h2 class="mb-3 mt-5">{{ call .Trans "Subscribe to our newsletter" }}</h2>
         <div class="subscribe-form">
             <form method="post" action="/subscribe" class="d-flex">
-            <input id="email" type="text" name="email" class="form-control" placeholder="{{ .Email }}">
-            <button type="submit" class="btn btn-lg btn-primary">{{ .Subscribe }}</button>
+            <input id="email" type="text" name="email" class="form-control" placeholder="{{ call .Trans `Email` }}">
+            <button type="submit" class="btn btn-lg btn-primary">{{ call .Trans "Subscribe" }}</button>
             </form>
         </div>
-        <p class="lead mb-3 mt-3">{{ .NoSpamNotice }}</p>
+        <p class="lead mb-3 mt-3">{{ call .Trans "If you want to receive updates from us just pop your email in the box. We think that spam is for jerks. And jerks we are not." }}</p>
         </div>
     </div>
 </main>

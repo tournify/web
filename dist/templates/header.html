@@ -3,7 +3,7 @@
 <header>
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="/">{{ .SiteName }}</a>
+            <a class="navbar-brand" href="/">{{ call .Trans "site_name" }}</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
                     aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -12,45 +12,45 @@
                 {{ if .IsAuthenticated }}
                 <ul class="navbar-nav me-auto mb-2 mb-md-0">
                     <li class="nav-item">
-                        <a class="nav-link" href="/tournament/create">{{ .CreateTournament }}</a>
+                        <a class="nav-link" href="/tournament/create">{{ call .Trans "Create Tournament" }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/dashboard">{{ .Dashboard }}</a>
+                        <a class="nav-link" href="/dashboard">{{ call .Trans "Dashboard" }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/blog">{{ .Blog }}</a>
+                        <a class="nav-link" href="/blog">{{ call .Trans "Blog" }}</a>
                     </li>
                     {{ if .IsAdmin }}
                     <li class="nav-item">
-                        <a class="nav-link" href="/blog/create">{{ .CreateBlogPost }}</a>
+                        <a class="nav-link" href="/blog/create">{{ call .Trans "Create Blog Post" }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/admin">{{ .Admin }}</a>
+                        <a class="nav-link" href="/admin">{{ call .Trans "Admin" }}</a>
                     </li>
                     {{ end }}
                     <li class="nav-item">
-                        <a class="nav-link" href="/logout">{{ .Logout }}</a>
+                        <a class="nav-link" href="/logout">{{ call .Trans "Logout" }}</a>
                     </li>
                 </ul>
                 {{ else }}
                 <ul class="navbar-nav me-auto mb-2 mb-md-0">
                     <li class="nav-item">
-                        <a class="nav-link" href="/tournament/create">{{ .CreateTournament }}</a>
+                        <a class="nav-link" href="/tournament/create">{{ call .Trans "Create Tournament" }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/blog">{{ .Blog }}</a>
+                        <a class="nav-link" href="/blog">{{ call .Trans "Blog" }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/login">{{ .Login }}</a>
+                        <a class="nav-link" href="/login">{{ call .Trans "Login" }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/register">{{ .Register }}</a>
+                        <a class="nav-link" href="/register">{{ call .Trans "Register" }}</a>
                     </li>
                 </ul>
                 {{ end }}
                 <form method="post" action="/search" class="d-flex">
-                    <input name="search" class="form-control me-2" type="search" placeholder="{{ .Search }}" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">{{ .Search }}</button>
+                    <input name="search" class="form-control me-2" type="search" placeholder="{{ call .Trans `Search` }}" aria-label="{{ call .Trans `Search` }}">
+                    <button class="btn btn-outline-success" type="submit">{{ call .Trans "Search" }}</button>
                 </form>
             </div>
         </div>

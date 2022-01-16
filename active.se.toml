@@ -1,10 +1,50 @@
+[activate_title]
+hash = "sha1-92ef08325a4813563a3110359906076374683282"
+other = "Aktivera"
+
 [admin]
 hash = "sha1-4e7afebcfbae000b22c7c85e5560f89a2a0280b4"
 other = "Admin"
 
+[admin_title]
+hash = "sha1-4e7afebcfbae000b22c7c85e5560f89a2a0280b4"
+other = "Admin"
+
+[advanced]
+hash = "sha1-4d064726954a17487f94e931f5b157b733ec22ed"
+other = "Avancerat"
+
+[ago]
+hash = "sha1-f03c0a59c59454eea25ccc9b83f19b79a7c85f45"
+other = "sedan"
+
+[all_rights_reserved]
+hash = "sha1-3639ec0f50b0f9a9a60809dc558a8b5d72fef67b"
+other = "All rights reserved."
+
+[and]
+hash = "sha1-cffa50a32cb13a240d705317bcec65dd1f31b6ad"
+other = "och"
+
+[away_team]
+hash = "sha1-457d87c09f9ca29a5395821a04aa9cd79d87b88d"
+other = "Borta Lag"
+
 [blog]
 hash = "sha1-0b9d2b2362bc33581ba11fddcb0cf0590ebd3a7a"
 other = "Blogg"
+
+[click_here]
+hash = "sha1-0049f8894e41937ebb9111cd3def6749049fb50f"
+other = "Klicka här"
+
+[coming_soon]
+hash = "sha1-9549bf8d0d30a9496159e0bde5fb063fdb817905"
+other = "kommer snart"
+
+[cookie_login_text]
+hash = "sha1-ea0e769c166cd14f9bca7d9c7acfb6b3821e05bc"
+other = "När du trycker på knappen här nedan så går du med på att använda cookies på denna webbsida."
 
 [create]
 hash = "sha1-6e157c5da4410b7e9de85f5c93026b9176e69064"
@@ -18,6 +58,10 @@ other = "Skapa Blogg Inlägg"
 hash = "sha1-44407b4e2922be9c2bb52f010772f2f2c1068e49"
 other = "Skapa Turnering"
 
+[create_tournament_title]
+hash = "sha1-44407b4e2922be9c2bb52f010772f2f2c1068e49"
+other = "Skapa Turnering"
+
 [created_by]
 hash = "sha1-5d73cc30510c739ed68c572c5199e106d325b648"
 other = "Skapad av"
@@ -26,23 +70,71 @@ other = "Skapad av"
 hash = "sha1-d87f47b47e4d5794d53fe0734c49417bd046cde0"
 other = "Översikt"
 
+[diff]
+hash = "sha1-d23a1c9fb35fe6b57ac5f1bfdb31606baf7e1006"
+other = "Diff"
+
 [easy_to_create_tournaments]
 hash = "sha1-0b7a99f8b8eeffc21ab089e79d46c5279d2f8bf8"
 other = "Enkelt att skapa turneringar"
+
+[elimination]
+hash = "sha1-52b274f44ee359523469b15453109497a69e6fbc"
+other = "Eliminering"
+
+[elimination_count]
+hash = "sha1-a28ae465ddaf54354e9ed1642c52690494721ac9"
+other = "Hur många lag elimineras från varje grupp?"
 
 [email]
 hash = "sha1-84add5b2952787581cb9a8851eef63d1ec75d22b"
 other = "E-post"
 
+[email_address]
+hash = "sha1-c94d3175a6560565410511df2cebab9cda96027e"
+other = "E-post address"
+
+[enter_new_password]
+hash = "sha1-9dcea7196a4837caabeec6ff42187ac2e06ecfe0"
+other = "Vänligen fyll i ett nytt lösenord."
+
+[forgot_password]
+hash = "sha1-4c29f7f0335807c2524d8c36d531496aee23f473"
+other = "Glömt ditt lösenord?"
+
+[forgot_password_text]
+hash = "sha1-a26d5aff2268c555941e8610171e348f1fd3db64"
+other = "Använd följande formulär för att återställa ditt lösenord. Om det finns ett konto så kommer instruktioner att skickas till den angivna e-post addressen som förklarar nästa steg för att återställa ditt lösenord."
+
+[forgot_password_title]
+hash = "sha1-f99d98e85f9064a9b39c10c0d10fa2151df4a764"
+other = "Glömt Ditt Lösenord?"
+
 [fork_this_project_on]
 hash = "sha1-14d277545460f1796542547a5cf2151fc433f917"
 other = "Skapa en fork av detta projekt på"
+
+[games]
+hash = "sha1-398ed329814977519b9f899253338884a2ba941f"
+other = "Matcher"
+
+[group]
+hash = "sha1-171a0606f7c74580fd3982cf57c49d604104120a"
+other = "Grupp"
 
 [home]
 hash = "sha1-70f8bb9a8a5393ef080507a89e4b98d139000d65"
 other = "Hem"
 
+[home_team]
+hash = "sha1-39e230f1fde7202005dca86f14d0fb3600c54f7c"
+other = "Hemma Lag"
+
 [login]
+hash = "sha1-4e5a2893bdcc7d239c1db72e4c4ffbe4bea73174"
+other = "Logga in"
+
+[login_title]
 hash = "sha1-4e5a2893bdcc7d239c1db72e4c4ffbe4bea73174"
 other = "Logga in"
 
@@ -50,23 +142,151 @@ other = "Logga in"
 hash = "sha1-e43d612e11f1568f2373e719d4c4b08dcecdc7cc"
 other = "Logga ut"
 
+[lost]
+hash = "sha1-75a7bf994e9ac1b9d14062213673cc0a85729869"
+other = "Förlorade"
+
+[mix_teams]
+hash = "sha1-4c529d06ad44a578303636bfae74df72bfd054e0"
+other = "Blanda Lag"
+
+[name]
+hash = "sha1-709a23220f2c3d64d1e1d6d18c4d5280f8d82fca"
+other = "Namn"
+
 [no_spam_notice]
 hash = "sha1-b6f8cf81201bb373ba7292d2918eb4e084782dde"
 other = "Fyll i din e-post om du vill få nyheter från oss. Vi skickar aldrig spam och lämnar aldrig ut din e-post till tredje part."
+
+[not_found_text]
+hash = "sha1-bcadd04af7cf1fa64f31f38899045f82685d55a7"
+other = "Sidan du försökte hitta finns inte."
+
+[not_found_title]
+hash = "sha1-5b65037351caeb0e5a48d963d7ffa88d0271d546"
+other = "404 Sidan Finns Tnte"
+
+[number_of_groups]
+hash = "sha1-52dc2b1a7ce5c9d7176bcd45ff5dd08bb5e19a70"
+other = "Antal grupper"
+
+[number_of_meets]
+hash = "sha1-41b13f9e10fe67622913ba866670c28e300f07dd"
+other = "Hur många gånger ska varje lag möta varandra?"
+
+[number_of_teams]
+hash = "sha1-be2bfd47b43be8eed4959eba817826550dfe48e1"
+other = "Antal lag (Max 64)"
 
 [optional]
 hash = "sha1-0c6c4102d4dfec3b1aa41117e0e344046c58a151"
 other = "Valfritt"
 
+[password]
+hash = "sha1-8be3c943b1609fffbfc51aad666d0a04adf83c9d"
+other = "Lösenord"
+
+[played]
+hash = "sha1-91d5082c1dc5a2c43522f724b0110e3bc1cb6760"
+other = "Spelat"
+
+[points]
+hash = "sha1-4b2a6a3149566c8245fa37ec86bac6c047004de2"
+other = "Poäng"
+
+[points_for_draw]
+hash = "sha1-ce89b9912f49493438d985fc57c37e56174a06aa"
+other = "Poäng för oavgjort"
+
+[points_for_loss]
+hash = "sha1-ff7acbbdf14e22bee3355516f1a8bfafa57956ed"
+other = "Poäng för förlust"
+
+[points_for_winning]
+hash = "sha1-51174ddbb05cf957aec06baf2a3f2f2166c09f4b"
+other = "Poäng för vinst"
+
 [privacy_policy]
 hash = "sha1-9db108ba6b7f6571356060929e37dae65878cfca"
 other = "Integritetspolicy"
+
+[privacy_policy_part_1]
+hash = "sha1-4d1bd5e3174b456ad4dbb6dfffd306681b1750be"
+other = "Namn på spel, lag, spelare, och ditt konto för publika turneringar är publika och kan visas till alla som använder denna webbplats. Turneringar som är private eller som endast visas om man har en länk visas bara till användare som har fått behörighet eller besöker turneringens sida via länken."
+
+[privacy_policy_part_2]
+hash = "sha1-998bfa5dd9ffc28970ca95aca6bcd4fa76a77b7b"
+other = "Vi kommer aldrig att dela din e-post till tredje part och skickar aldrig ut reklam som inte handlar om denna webbplats eller företag. Du kan be om att slutar få mail från oss eller att vi tar bort ditt konto när som helst. Det kan hända att vi måste behålla din e-post under en längre period om du har köpt något via denna webbsida."
+
+[privacy_policy_part_3]
+hash = "sha1-06033983e5abb0234e6e7a0bf3a3815cddde1df7"
+other = "Vi använder oss av cookies för att låta användare skapa turneringar och logga in till vår webbsida."
+
+[privacy_policy_title]
+hash = "sha1-9db108ba6b7f6571356060929e37dae65878cfca"
+other = "Integritetspolicy"
+
+[private]
+hash = "sha1-237dfa0a21c8e17a7276cf161eef7e0fba067c47"
+other = "Privat"
+
+[public]
+hash = "sha1-dc5eb704bbcae1aff4efb71c55461d47767dabe7"
+other = "Publik"
+
+[recent_tournaments]
+hash = "sha1-ef4016fa589e84e154f5828386f2d08741c1efea"
+other = "Senaste Turneringar"
 
 [register]
 hash = "sha1-d672995a14650d0e018026b64f297663d8c71c8d"
 other = "Registrera"
 
+[register_agree]
+hash = "sha1-bb900e66cd44f54cce79d34a9b9a59f56493bb2d"
+other = "När du registrerar går du med på våra"
+
+[register_title]
+hash = "sha1-d672995a14650d0e018026b64f297663d8c71c8d"
+other = "Registrera"
+
+[request_activation_email]
+hash = "sha1-fc2463c91df0c8d36687a82096815486578eb3e4"
+other = "Be om ett nytt aktiveringsmail"
+
+[request_reset_email]
+hash = "sha1-2a2c3609527fa9a048ae9f66b12597c7fa10379c"
+other = "Begär återställning"
+
+[resend_activation_email]
+hash = "sha1-2a765254a16b8d77c89125cabc42996f28dac3e6"
+other = "Skica Aktiveringsmail Igen"
+
+[resend_activation_email_text]
+hash = "sha1-1b1134c510f756f97e23dfb6c2eef4ec1cfdbcc6"
+other = "Om du redan har registrerat men aldrig aktiverat ditt konto så kan du använda formuläret för att begära ett nytt aktiveringsmail."
+
+[resend_activation_email_title]
+hash = "sha1-2a765254a16b8d77c89125cabc42996f28dac3e6"
+other = "Skicka aktiverings mail igen"
+
+[reset_password_title]
+hash = "sha1-3fb75e3bfe4de94eb5198656fa9de95352dab915"
+other = "Återställ Lösenord"
+
+[return_to_main]
+hash = "sha1-5805972e75bdf639b44d9deb0460971aa4b3525b"
+other = "för att komma tillbaka till huvudsidan."
+
 [search]
+hash = "sha1-bce06414177f72ab70e6387b6af9f8ceef0d6049"
+other = "Sök"
+
+[search_results]
+hash = "sha1-5e054413dacd642ddacc8f8ec146442bea000086"
+other = "Sök Resultat"
+
+[search_title]
 hash = "sha1-bce06414177f72ab70e6387b6af9f8ceef0d6049"
 other = "Sök"
 
@@ -94,6 +314,66 @@ other = "Prenumerera på vårt nyhetsbrev"
 hash = "sha1-0c8a9a95e21aeb403402ed64338810d787cc5f91"
 other = "Användarvillkor"
 
+[terms_of_service_part_1]
+hash = "sha1-568758eefa1512c3f45923cd1d5b0d1ca3c93885"
+other = "Vi vill att det ska vara enkelt att förstå våra användarvilkor. Missbruka inte vår webbplats genom att använda fult språk eller någon annan form av missbruk. Ditt konto och allt innehåll på webbplatsen kan raderas när som helst. Dessa villkor kan ändras när som helst utan varning."
+
+[terms_of_service_part_2]
+hash = "sha1-56ddb1fccf429cc77812b6c10cd46fcf9ce3a6c1"
+other = "Vi är inte ansvariga för innehållet som publiceras av användare. Skicka ett e-postmeddelande till markus@tournify.io angående nedtagningar så kommer vi att göra vårt bästa för att svara inom 24 timmar."
+
+[terms_of_service_part_3]
+hash = "sha1-5a999dffb2b942490b71fe62b2e546237fcf84ca"
+other = "Se vår integritetspolicy om du vill veta hur vi hanterar din information."
+
+[terms_of_service_title]
+hash = "sha1-0c8a9a95e21aeb403402ed64338810d787cc5f91"
+other = "Användarvillkor"
+
+[the_tournament]
+hash = "sha1-fa0951a85530e2462135420791399a9c8f0e3e22"
+other = "Turneringen"
+
+[ties]
+hash = "sha1-5c3ec26bbd28f2736c1e0fd0371384e568657946"
+other = "Oavgjort"
+
+[tournament_create_text]
+hash = "sha1-5a34e7d267a5143f4493301441911a6a60e7dc93"
+other = "Genom att klicka på skapa godkänner du användningen av cookies på denna webbplats. Observera att det kan ta en stund att skapa turneringen."
+
 [tournament_name]
-hash = "sha1-5d357591bb4332ae0e961a131b4df44460eedb42"
-other = "Turneringens namn"
+hash = "sha1-0398e81b1c642bafc033ab06dee2fb033ad93481"
+other = "Turneringens Namn"
+
+[tournament_title]
+hash = "sha1-a2c1d828e2d3aabee7adbb7b9fc864cf31fcfb4d"
+other = "Turnering"
+
+[type]
+hash = "sha1-3deb7456519697ecf4eefc455516c969a3681bae"
+other = "Typ"
+
+[under_construction_text]
+hash = "sha1-a8cbdbe343aafba0b27d7c124ba3d82aa5798b10"
+other = "Sidan är under uppbyggnad"
+
+[view_tournament]
+hash = "sha1-c48f698b71fe51bcb8ec5a1d0e666f7c4633d158"
+other = "Visa Turnering"
+
+[visibility]
+hash = "sha1-7d9ff4f0de398581c4640bcbb6e536c355a391be"
+other = "Synlighet"
+
+[visible_with_link]
+hash = "sha1-b51275bd587c6ff9a33ac3774dd25b55a24c975d"
+other = "Visas endast med länk"
+
+[was_created]
+hash = "sha1-f55f6aa6e0593da8cc833e4e531d061f51568d34"
+other = "skapades för"
+
+[wins]
+hash = "sha1-b6c015d12e1b59bd78fb246985e37730e38521f8"
+other = "Vinster"
