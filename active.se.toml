@@ -114,6 +114,10 @@ other = "Glömt Ditt Lösenord?"
 hash = "sha1-14d277545460f1796542547a5cf2151fc433f917"
 other = "Skapa en fork av detta projekt på"
 
+[game]
+hash = "sha1-e3e82846c32567811615378f30240185871e08e5"
+other = "Match"
+
 [games]
 hash = "sha1-398ed329814977519b9f899253338884a2ba941f"
 other = "Matcher"
@@ -309,6 +313,10 @@ other = "Prenumerera"
 [subscribe_to_our_newsletter]
 hash = "sha1-3ae5a4f21ea0626bab5ac6472de6e1415aaa416a"
 other = "Prenumerera på vårt nyhetsbrev"
+
+[team]
+hash = "sha1-218887269ad5946d9dc53238651c90472884fb0f"
+other = "Lag"
 
 [terms_of_service]
 hash = "sha1-0c8a9a95e21aeb403402ed64338810d787cc5f91"

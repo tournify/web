@@ -333,4 +333,12 @@ var translationMessages = []i18n.Message{
 		ID:    "games",
 		Other: "Games",
 	},
+	{
+		ID:    "game",
+		Other: "Game",
+	},
+	{
+		ID:    "team",
+		Other: "Team",
+	},
 }

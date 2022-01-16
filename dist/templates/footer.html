@@ -3,6 +3,17 @@
         <span class="text-muted">© {{ .Year }} {{ call .Trans "site_name" }}. {{ call .Trans "All rights reserved." }} | {{ .ForkThisProjectOn }} <a href="https://github.com/tournify/web">GitHub</a> | {{ call .Trans "Created by" }} <a href="https://github.com/uberswe">Markus Tenghamn</a> | <a href="/privacy-policy">{{ call .Trans "Privacy Policy" }}</a> | <a href="/terms-of-service">{{ call .Trans "Terms of Service" }}</a></span>
     </div>
 </footer>
+<script>
+    // Translations to be passed to js
+    let groupLabel = "{{ call .Trans `Group` }}"
+    let playedLabel = "{{ call .Trans `Played` }}"
+    let winsLabel = "{{ call .Trans `Wins` }}"
+    let tiesLabel = "{{ call .Trans `Ties` }}"
+    let lostLabel = "{{ call .Trans `Lost` }}"
+    let diffLabel = "{{ call .Trans `Diff` }}"
+    let pointsLabel = "{{ call .Trans `Points` }}"
+    let teamLabel = "{{ call .Trans `Team` }}"
+</script>
 <script src="/assets/js/main.js?c={{ .CacheParameter }}"></script>
 {{ template "tracking.html" }}
 </body>

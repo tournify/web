@@ -390,7 +390,7 @@ func (controller Controller) TournamentCreatePost(c *gin.Context) {
 			teamCount++
 			teamSlug := slug.Make(team)
 			if team == "" {
-				team = fmt.Sprintf("Team %d", teamCount)
+				team = fmt.Sprintf("%s %d", pd.Trans("Team"), teamCount)
 				teamSlug = slug.Make(team) + "-" + util.RandomString(4)
 			}
 			teamModel := models.Team{
@@ -420,7 +420,7 @@ func (controller Controller) TournamentCreatePost(c *gin.Context) {
 		tournament := tournify.CreateGroupTournamentFromTeams(teamInterfaces, groupCountInt, meetCountInt)
 
 		for i, group := range tournament.GetGroups() {
-			groupName := fmt.Sprintf("Group %d", i+1)
+			groupName := fmt.Sprintf("%s %d", pd.Trans("Group"), i+1)
 			groupSlug := slug.Make(groupName) + "-" + util.RandomString(4)
 			groupModel := models.Group{
 				Name:         groupName,
@@ -446,7 +446,7 @@ func (controller Controller) TournamentCreatePost(c *gin.Context) {
 							},
 						})
 					}
-					gameName := fmt.Sprintf("Game %d", x+1)
+					gameName := fmt.Sprintf("%s %d", pd.Trans("Game"), x+1)
 					gameSlug := slug.Make(gameName) + "-" + util.RandomString(4)
 					homeTeamID := uint(game.GetHomeTeam().GetID())
 					awayTeamID := uint(game.GetAwayTeam().GetID())

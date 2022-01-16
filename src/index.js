@@ -103,7 +103,7 @@ if(createGroups){
             let input = document.createElement("input")
             input.setAttribute("type", "text")
             input.setAttribute("name", "team[]")
-            input.setAttribute("placeholder", "Team " + i)
+            input.setAttribute("placeholder", teamLabel + " " + i)
             input.setAttribute("class", "form-control")
             let inputLi = document.createElement("li");
             inputLi.appendChild(input)
@@ -113,7 +113,7 @@ if(createGroups){
         for (let x = 0; x < groups.length; x++) {
             let groupDiv = document.createElement("div")
             if (tourType.value === "0") {
-                groupDiv.innerHTML = "<h2>Group " + (x + 1) + "</h2>"
+                groupDiv.innerHTML = "<h2>" + groupLabel + " " + (x + 1) + "</h2>"
             } else {
                 groupDiv.innerHTML = "<h2>Teams</h2>"
             }
@@ -160,21 +160,19 @@ if(createGroups){
                         for (const [key, value] of Object.entries(obj)) {
                             newHtml += "<thead>"
                             newHtml += "<tr>"
-                            newHtml += "<th scope=\"col\">Group " + key + "</th>"
-                            newHtml += "<th scope=\"col\">Team</th>"
-                            newHtml += "<th scope=\"col\">Played</th>"
-                            newHtml += "<th scope=\"col\">Wins</th>"
-                            newHtml += "<th scope=\"col\">Ties</th>"
-                            newHtml += "<th scope=\"col\">Lost</th>"
+                            newHtml += "<th scope=\"col\">" + groupLabel + " " + key + "</th>"
+                            newHtml += "<th scope=\"col\">" + playedLabel + "</th>"
+                            newHtml += "<th scope=\"col\">" + winsLabel + "</th>"
+                            newHtml += "<th scope=\"col\">" + tiesLabel + "</th>"
+                            newHtml += "<th scope=\"col\">" + lostLabel + "</th>"
                             newHtml += "<th scope=\"col\">+/-</th>"
-                            newHtml += "<th scope=\"col\">Diff</th>"
-                            newHtml += "<th scope=\"col\">Points</th>"
+                            newHtml += "<th scope=\"col\">" + diffLabel + "</th>"
+                            newHtml += "<th scope=\"col\">" + pointsLabel + "</th>"
                             newHtml += "</tr>"
                             newHtml += "</thead>"
                             newHtml += "</tbody>"
                             for (const [statKey, statValue] of Object.entries(value.stats)) {
                                 newHtml += "<tr>"
-                                newHtml += "<td></td>"
                                 newHtml += "<th scope=\"row\">" + statValue.team.name + "</th>"
                                 newHtml += "<td>" + statValue.played + "</td>"
                                 newHtml += "<td>" + statValue.wins + "</td>"
