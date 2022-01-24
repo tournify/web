@@ -30,3 +30,7 @@ func (t *Team) Print() string {
 func (t *Team) GetEliminatedCount() int {
 	return t.Eliminated
 }
+
+func (t *Team) SetEliminatedCount(c int) {
+	t.Eliminated = c
+}

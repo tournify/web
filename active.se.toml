@@ -1,3 +1,15 @@
+[16th_final]
+hash = "sha1-56f9bd93ab014dae4bbd184ea979ac8c6fa86e51"
+other = "1/16-Final"
+
+[32nd_final]
+hash = "sha1-ab3ef58786f22dce47f22c093fc3ad45a0129257"
+other = "1/32-Final"
+
+[404_notice_about_old_website]
+hash = "sha1-59b1bc34b0841efcb614ba3a445189de4930ad39"
+other = "Vi skapade nyligen en ny sida, om du letar efter en tidigare turnering som inte finns vänligen gå till https://old.turnering.io"
+
 [activate_title]
 hash = "sha1-92ef08325a4813563a3110359906076374683282"
 other = "Aktivera"
@@ -78,6 +90,10 @@ other = "Diff"
 hash = "sha1-0b7a99f8b8eeffc21ab089e79d46c5279d2f8bf8"
 other = "Enkelt att skapa turneringar"
 
+[eight_final]
+hash = "sha1-d9a361f5e2fd2c28a7f4c4a8e4691176f4d779e5"
+other = "1/8-Final"
+
 [elimination]
 hash = "sha1-52b274f44ee359523469b15453109497a69e6fbc"
 other = "Eliminering"
@@ -97,6 +113,10 @@ other = "E-post address"
 [enter_new_password]
 hash = "sha1-9dcea7196a4837caabeec6ff42187ac2e06ecfe0"
 other = "Vänligen fyll i ett nytt lösenord."
+
+[final]
+hash = "sha1-672b22cc516eadec8a685564932261281c4d2729"
+other = "Final"
 
 [forgot_password]
 hash = "sha1-4c29f7f0335807c2524d8c36d531496aee23f473"
@@ -238,6 +258,10 @@ other = "Privat"
 hash = "sha1-dc5eb704bbcae1aff4efb71c55461d47767dabe7"
 other = "Publik"
 
+[quarter_final]
+hash = "sha1-dd87e6ece37140cea748cc0a28e2286b973df516"
+other = "Kvartsfinal"
+
 [recent_tournaments]
 hash = "sha1-ef4016fa589e84e154f5828386f2d08741c1efea"
 other = "Senaste Turneringar"
@@ -293,6 +317,10 @@ other = "Sök Resultat"
 [search_title]
 hash = "sha1-bce06414177f72ab70e6387b6af9f8ceef0d6049"
 other = "Sök"
+
+[semi_final]
+hash = "sha1-df5db9977119fcc67408075588c1c1ae20d19acd"
+other = "Semifinal"
 
 [site_name]
 hash = "sha1-cd1e6420c8e1b7ea6cc490f654d25d57476fcbf2"

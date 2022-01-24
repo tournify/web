@@ -212,6 +212,107 @@ Group   Team    Played  Wins    Ties    Losses  +/-     Diff    Points
 
 Teams are ordered by the number of points. If a team has an equal number of points as another the diff value is used as a tie-breaker. If the diff value is also the same then the points scored against other teams is used.
 
+Elimination tournaments are also possible. Here is an example of an elimination tournament with 8 teams:
+
+```go
+package main
+
+import (
+	"fmt"
+	"github.com/tournify/tournify"
+	"math"
+	"math/rand"
+	"time"
+)
+
+func main() {
+	teams := []tournify.Team{
+		{ID: 0},
+		{ID: 1},
+		{ID: 2},
+		{ID: 3},
+		{ID: 4},
+		{ID: 5},
+		{ID: 6},
+		{ID: 7},
+	}
+
+	teamInterfaces := make([]tournify.TeamInterface, len(teams))
+
+	for i := range teams {
+		teamInterfaces[i] = &teams[i]
+	}
+
+	tournament := tournify.CreateEliminationTournamentFromTeams(teamInterfaces)
+
+	for _, game := range tournament.GetGames() {
+		err := tournament.SetGameScore(game, randomEvenFloat(0.0, 100.0), randomEvenFloat(0.0, 100.0))
+		if err != nil {
+			panic(err)
+		}
+	}
+
+	// The print method gives us a string representing the current tournament
+	fmt.Println(tournament.Print())
+
+	// Loop eliminated teams
+	fmt.Println("Eliminated teams")
+	for _, team := range tournament.GetEliminatedTeams() {
+		fmt.Printf("Team ID: %d\n", team.GetID())
+	}
+
+	fmt.Println()
+
+	// Loop remaining teams
+	fmt.Println("Remaining teams")
+	for _, team := range tournament.GetRemainingTeams() {
+		fmt.Printf("Team ID: %d\n", team.GetID())
+	}
+}
+
+func randomEvenFloat(min float64, max float64) float64 {
+	rand.Seed(time.Now().UnixNano())
+	return math.RoundToEven(min + rand.Float64()*(max-min))
+}
+```
+
+The output from the above code will be something like the following:
+
+```bash
+TournamentType: Elimination
+
+Teams
+Team ID: 0
+Team ID: 1
+Team ID: 2
+Team ID: 3
+Team ID: 4
+Team ID: 5
+Team ID: 6
+Team ID: 7
+
+Games
+Game ID: 0, HomeTeam: 0, AwayTeam: 1, HomeScore: 85.00, AwayScore: 55.00
+Game ID: 1, HomeTeam: 2, AwayTeam: 3, HomeScore: 14.00, AwayScore: 10.00
+Game ID: 2, HomeTeam: 4, AwayTeam: 5, HomeScore: 53.00, AwayScore: 49.00
+Game ID: 3, HomeTeam: 6, AwayTeam: 7, HomeScore: 95.00, AwayScore: 91.00
+Game ID: 4, HomeTeam: 0, AwayTeam: 2, HomeScore: 34.00, AwayScore: 31.00
+Game ID: 5, HomeTeam: 4, AwayTeam: 6, HomeScore: 0.00, AwayScore: 70.00
+Game ID: 6, HomeTeam: 0, AwayTeam: 6, HomeScore: 13.00, AwayScore: 12.00
+
+Eliminated teams
+Team ID: 1
+Team ID: 2
+Team ID: 3
+Team ID: 4
+Team ID: 5
+Team ID: 7
+
+Remaining teams
+Team ID: 0
+Team ID: 6
+```
+
 Contributing
 =
 

@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"errors"
 	"fmt"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
@@ -27,8 +28,14 @@ type TournamentViewPageData struct {
 	PageData
 	TournamentName string
 	TournamentSlug string
+	TournamentType int
 	Groups         map[int]TournamentViewGroup
-	CanEdit        bool
+	Rounds         []Round `json:"rounds"`
+}
+
+type Round struct {
+	Games []models.Game `json:"games"`
+	Name  string        `json:"name"`
 }
 
 type TournamentViewGroup struct {
@@ -77,15 +84,56 @@ func (controller Controller) TournamentCreatePost(c *gin.Context) {
 		return
 	}
 
+	visibility := c.PostForm("visibility")
+	teams := c.PostFormArray("team[]")
+
+	visibilityInt, err7 := strconv.Atoi(visibility)
+	if err7 != nil {
+		log.Println(err7)
+		pd.Messages = append(pd.Messages, Message{
+			Type:    "error",
+			Content: "Bad input, please check your settings and try again.",
+		})
+		c.HTML(http.StatusBadRequest, "tournament-create.html", pd)
+		return
+	}
+
+	tourTypeInt, err8 := strconv.Atoi(tourType)
+	if err8 != nil {
+		log.Println(err8)
+		pd.Messages = append(pd.Messages, Message{
+			Type:    "error",
+			Content: "Bad input, please check your settings and try again.",
+		})
+		c.HTML(http.StatusBadRequest, "tournament-create.html", pd)
+		return
+	}
+
+	if len(teams) > 64 {
+		pd.Messages = append(pd.Messages, Message{
+			Type:    "error",
+			Content: "Up to 64 teams is currently supported.",
+		})
+		c.HTML(http.StatusBadRequest, "tournament-create.html", pd)
+		return
+	}
+
+	if len(teams) < 2 {
+		pd.Messages = append(pd.Messages, Message{
+			Type:    "error",
+			Content: "At least 2 teams have to be in a tournament",
+		})
+		c.HTML(http.StatusBadRequest, "tournament-create.html", pd)
+		return
+	}
+
 	if tourType == "0" {
+		// Create group tournament
 		meetCount := c.PostForm("meetcount")
 		groupCount := c.PostForm("groupcount")
-		elimCount := c.PostForm("elimcount")
 		winPoints := c.PostForm("winpoints")
 		tiePoints := c.PostForm("tiepoints")
 		lossPoints := c.PostForm("losspoints")
-		visibility := c.PostForm("visibility")
-		teams := c.PostFormArray("team[]")
 		meetCountInt, err := strconv.Atoi(meetCount)
 		if err != nil {
 			log.Println(err)
@@ -107,16 +155,6 @@ func (controller Controller) TournamentCreatePost(c *gin.Context) {
 			return
 		}
 
-		_, err3 := strconv.Atoi(elimCount)
-		if err3 != nil {
-			log.Println(err3)
-			pd.Messages = append(pd.Messages, Message{
-				Type:    "error",
-				Content: "Bad input, please check your settings and try again.",
-			})
-			c.HTML(http.StatusBadRequest, "tournament-create.html", pd)
-			return
-		}
 		_, err4 := strconv.Atoi(winPoints)
 		if err4 != nil {
 			log.Println(err4)
@@ -143,34 +181,6 @@ func (controller Controller) TournamentCreatePost(c *gin.Context) {
 			pd.Messages = append(pd.Messages, Message{
 				Type:    "error",
 				Content: "Bad input, please check your settings and try again.",
-			})
-			c.HTML(http.StatusBadRequest, "tournament-create.html", pd)
-			return
-		}
-		visibilityInt, err7 := strconv.Atoi(visibility)
-		if err7 != nil {
-			log.Println(err7)
-			pd.Messages = append(pd.Messages, Message{
-				Type:    "error",
-				Content: "Bad input, please check your settings and try again.",
-			})
-			c.HTML(http.StatusBadRequest, "tournament-create.html", pd)
-			return
-		}
-
-		if len(teams) > 64 {
-			pd.Messages = append(pd.Messages, Message{
-				Type:    "error",
-				Content: "Up to 64 teams is currently supported.",
-			})
-			c.HTML(http.StatusBadRequest, "tournament-create.html", pd)
-			return
-		}
-
-		if len(teams) < 2 {
-			pd.Messages = append(pd.Messages, Message{
-				Type:    "error",
-				Content: "At least 2 teams have to be in a tournament",
 			})
 			c.HTML(http.StatusBadRequest, "tournament-create.html", pd)
 			return
@@ -212,113 +222,9 @@ func (controller Controller) TournamentCreatePost(c *gin.Context) {
 			return
 		}
 
-		if name == "" {
-			name = "Tournament " + time.Now().Format("2006-01-02 15:04:05")
-		}
-		slugString := slug.Make(name)
-		tournamentModel := models.Tournament{
-			Name:    name,
-			Slug:    controller.createUniqueTournamentSlug(slugString, 0),
-			Type:    0,
-			Privacy: visibilityInt,
-		}
-
-		if isAuthenticated(c) {
-			log.Println("authenticated user")
-			userID, exists := c.Get(middleware.UserIDKey)
-
-			if exists {
-				userIDInt, ok := userID.(uint)
-				if ok {
-					userModel := models.User{}
-					userModel.ID = userIDInt
-					res := controller.db.Where(&userModel).First(&userModel)
-					if res.Error != nil {
-						log.Println(res.Error)
-						pd.Messages = append(pd.Messages, Message{
-							Type:    "error",
-							Content: "Could not create tournament, please try again or contact support.",
-						})
-						c.HTML(http.StatusBadRequest, "tournament-create.html", pd)
-						return
-					}
-
-					// Associate the user to the tournament
-					tournamentModel.Users = append(tournamentModel.Users, userModel)
-				}
-			} else {
-				// This should never happen, but we log it so that we might see it if it does happen for some reason
-				log.Println("userID doesn't exist but user is authenticated")
-			}
-		} else if isUnauthenticatedSession(c) {
-			log.Println("unauthenticated session")
-			sessionID, exists := c.Get(middleware.SessionIDKey)
-
-			if exists {
-				sessionIDInt, ok := sessionID.(uint)
-				if ok {
-					sessionModel := models.Session{}
-					sessionModel.ID = sessionIDInt
-					res := controller.db.Where(&sessionModel).First(&sessionModel)
-					if res.Error != nil {
-						log.Println(res.Error)
-						pd.Messages = append(pd.Messages, Message{
-							Type:    "error",
-							Content: "Could not create tournament, please try again or contact support.",
-						})
-						c.HTML(http.StatusBadRequest, "tournament-create.html", pd)
-						return
-					}
-
-					// Associate the user to the tournament
-					tournamentModel.Sessions = append(tournamentModel.Sessions, sessionModel)
-				}
-			} else {
-				// This should never happen, but we log it so that we might see it if it does happen for some reason
-				log.Println("userID doesn't exist but user is authenticated")
-			}
-		} else {
-			log.Println("no session")
-			// Generate a ULID for the current session
-			sessionIdentifier := util.GenerateULID()
-
-			ses := models.Session{
-				Identifier: sessionIdentifier,
-			}
-
-			// Session is valid for 30 days
-			ses.ExpiresAt = time.Now().Add(time.Hour * 24 * 30)
-
-			res := controller.db.Save(&ses)
-			if res.Error != nil {
-				log.Println(res.Error)
-				pd.Messages = append(pd.Messages, Message{
-					Type:    "error",
-					Content: "Could not create tournament, please try again or contact support.",
-				})
-				c.HTML(http.StatusBadRequest, "tournament-create.html", pd)
-				return
-			}
-
-			session := sessions.Default(c)
-			session.Set(middleware.SessionIdentifierKey, sessionIdentifier)
-
-			err = session.Save()
-			if err != nil {
-				log.Println(res.Error)
-				pd.Messages = append(pd.Messages, Message{
-					Type:    "error",
-					Content: "Could not create tournament, please try again or contact support.",
-				})
-				c.HTML(http.StatusBadRequest, "tournament-create.html", pd)
-				return
-			}
-
-			tournamentModel.Sessions = append(tournamentModel.Sessions, ses)
-		}
-
-		res := controller.db.Session(&gorm.Session{FullSaveAssociations: true}).Save(&tournamentModel)
-		if res.Error != nil {
+		slugString, createError := controller.createTournament(c, tourTypeInt, name, visibilityInt, winPoints, lossPoints, tiePoints, groupCountInt, meetCountInt, teams, pd.Trans)
+		if createError != nil {
+			log.Println(createError)
 			pd.Messages = append(pd.Messages, Message{
 				Type:    "error",
 				Content: "Could not create tournament, please try again or contact support.",
@@ -327,55 +233,13 @@ func (controller Controller) TournamentCreatePost(c *gin.Context) {
 			return
 		}
 
-		eliminationCountOption := models.TournamentOption{
-			Key:          "elimination_count",
-			Value:        elimCount,
-			TournamentID: tournamentModel.ID,
-		}
-		res = controller.db.Save(&eliminationCountOption)
-		if res.Error != nil {
-			pd.Messages = append(pd.Messages, Message{
-				Type:    "error",
-				Content: "Could not create tournament, please try again or contact support.",
-			})
-			c.HTML(http.StatusBadRequest, "tournament-create.html", pd)
-			return
-		}
-		winPointsOption := models.TournamentOption{
-			Key:          "win_points",
-			Value:        winPoints,
-			TournamentID: tournamentModel.ID,
-		}
-		res = controller.db.Save(&winPointsOption)
-		if res.Error != nil {
-			pd.Messages = append(pd.Messages, Message{
-				Type:    "error",
-				Content: "Could not create tournament, please try again or contact support.",
-			})
-			c.HTML(http.StatusBadRequest, "tournament-create.html", pd)
-			return
-		}
-		lossPointsOption := models.TournamentOption{
-			Key:          "loss_points",
-			Value:        lossPoints,
-			TournamentID: tournamentModel.ID,
-		}
-		res = controller.db.Save(&lossPointsOption)
-		if res.Error != nil {
-			pd.Messages = append(pd.Messages, Message{
-				Type:    "error",
-				Content: "Could not create tournament, please try again or contact support.",
-			})
-			c.HTML(http.StatusBadRequest, "tournament-create.html", pd)
-			return
-		}
-		tiePointsOption := models.TournamentOption{
-			Key:          "tie_points",
-			Value:        tiePoints,
-			TournamentID: tournamentModel.ID,
-		}
-		res = controller.db.Save(&tiePointsOption)
-		if res.Error != nil {
+		c.Redirect(http.StatusTemporaryRedirect, fmt.Sprintf("/tournament/%s", slugString))
+		return
+	} else if tourType == "1" {
+		// Create elimination tournament
+		slugString, createError := controller.createTournament(c, tourTypeInt, name, visibilityInt, "", "", "", 0, 0, teams, pd.Trans)
+		if createError != nil {
+			log.Println(createError)
 			pd.Messages = append(pd.Messages, Message{
 				Type:    "error",
 				Content: "Could not create tournament, please try again or contact support.",
@@ -384,94 +248,7 @@ func (controller Controller) TournamentCreatePost(c *gin.Context) {
 			return
 		}
 
-		var teamModels []models.Team
-		teamCount := 0
-		for _, team := range teams {
-			teamCount++
-			teamSlug := slug.Make(team)
-			if team == "" {
-				team = fmt.Sprintf("%s %d", pd.Trans("Team"), teamCount)
-				teamSlug = slug.Make(team) + "-" + util.RandomString(4)
-			}
-			teamModel := models.Team{
-				Name: team,
-				Slug: controller.createUniqueTeamSlug(teamSlug, 0),
-			}
-			teamModels = append(teamModels, teamModel)
-		}
-
-		res = controller.db.CreateInBatches(teamModels, 100)
-		if res.Error != nil {
-			pd.Messages = append(pd.Messages, Message{
-				Type:    "error",
-				Content: "Could not create teams, please try again or contact support.",
-			})
-			c.HTML(http.StatusBadRequest, "tournament-create.html", pd)
-			return
-		}
-
-		teamInterfaces := make([]tournify.TeamInterface, len(teams))
-
-		for i := range teams {
-			teamInterfaces[i] = &teamModels[i]
-		}
-
-		// The CreateGroupTournamentFromTeams method takes a slice of teams along with the group count and meet count
-		tournament := tournify.CreateGroupTournamentFromTeams(teamInterfaces, groupCountInt, meetCountInt)
-
-		for i, group := range tournament.GetGroups() {
-			groupName := fmt.Sprintf("%s %d", pd.Trans("Group"), i+1)
-			groupSlug := slug.Make(groupName) + "-" + util.RandomString(4)
-			groupModel := models.Group{
-				Name:         groupName,
-				Slug:         controller.createUniqueGroupSlug(groupSlug, 0),
-				TournamentID: tournamentModel.ID,
-			}
-			res = controller.db.Save(&groupModel)
-			if res.Error != nil {
-				pd.Messages = append(pd.Messages, Message{
-					Type:    "error",
-					Content: "Could not create groups, please try again or contact support.",
-				})
-				c.HTML(http.StatusBadRequest, "tournament-create.html", pd)
-				return
-			}
-			if group.GetGames() != nil {
-				for x, game := range *group.GetGames() {
-					var gameTeams []models.Team
-					for _, t := range game.GetTeams() {
-						gameTeams = append(gameTeams, models.Team{
-							Model: gorm.Model{
-								ID: uint(t.GetID()),
-							},
-						})
-					}
-					gameName := fmt.Sprintf("%s %d", pd.Trans("Game"), x+1)
-					gameSlug := slug.Make(gameName) + "-" + util.RandomString(4)
-					homeTeamID := uint(game.GetHomeTeam().GetID())
-					awayTeamID := uint(game.GetAwayTeam().GetID())
-					gameModel := models.Game{
-						Name:         gameName,
-						Slug:         controller.createUniqueGameSlug(gameSlug, 0),
-						TournamentID: tournamentModel.ID,
-						HomeTeamID:   &homeTeamID,
-						AwayTeamID:   &awayTeamID,
-						GroupID:      &groupModel.ID,
-						Teams:        gameTeams,
-					}
-					res = controller.db.Save(&gameModel)
-					if res.Error != nil {
-						pd.Messages = append(pd.Messages, Message{
-							Type:    "error",
-							Content: "Could not create games, please try again or contact support.",
-						})
-						c.HTML(http.StatusBadRequest, "tournament-create.html", pd)
-						return
-					}
-				}
-			}
-		}
-		c.Redirect(http.StatusTemporaryRedirect, fmt.Sprintf("/tournament/%s", tournamentModel.Slug))
+		c.Redirect(http.StatusTemporaryRedirect, fmt.Sprintf("/tournament/%s", slugString))
 		return
 	}
 	pd.Messages = append(pd.Messages, Message{
@@ -508,20 +285,88 @@ func (controller Controller) TournamentView(c *gin.Context) {
 
 	pd.TournamentSlug = t.Slug
 	pd.TournamentName = t.Name
+	pd.TournamentType = t.Type
 	pd.CanEdit = canEditTournament(c, t.ID)
 
-	var err error
-	pd.Groups, err = controller.getGroupTournamentStats(t)
-	if err != nil {
-		pd.Messages = append(pd.Messages, Message{
-			Type:    "error",
-			Content: "Could not generate statistics, please try again or contact support.",
-		})
-		c.HTML(http.StatusBadRequest, "tournament.html", pd)
-		return
+	if t.Type == 0 {
+		var err error
+		pd.Groups, err = controller.getGroupTournamentStats(t)
+		if err != nil {
+			pd.Messages = append(pd.Messages, Message{
+				Type:    "error",
+				Content: "Could not generate statistics, please try again or contact support.",
+			})
+			c.HTML(http.StatusBadRequest, "tournament.html", pd)
+			return
+		}
+	} else if t.Type == 1 {
+		var err error
+		pd.Rounds, err = controller.getEliminationTournamentGames(t, pd.Trans)
+		if err != nil {
+			pd.Messages = append(pd.Messages, Message{
+				Type:    "error",
+				Content: "Could not generate statistics, please try again or contact support.",
+			})
+			c.HTML(http.StatusBadRequest, "tournament.html", pd)
+			return
+		}
 	}
 
 	c.HTML(http.StatusOK, "tournament.html", pd)
+}
+
+func (controller *Controller) getEliminationTournamentGames(t models.Tournament, trans func(s string) string) (rounds []Round, err error) {
+	var games []models.Game
+	game := models.Game{
+		TournamentID: t.ID,
+	}
+
+	res := controller.db.Where(game).Preload("Teams").Preload("Scores").Order("depth DESC").Find(&games)
+	if res.Error != nil {
+		return nil, res.Error
+	}
+	lastDepth := -1
+	index := 0
+	for _, g := range games {
+		if g.Depth != nil {
+			if lastDepth == -1 {
+				lastDepth = *g.Depth
+				rounds = append(rounds, Round{
+					Name: trans("Final"),
+				})
+			}
+			if lastDepth != *g.Depth {
+				lastDepth = *g.Depth
+				index++
+				if index == 1 {
+					rounds = append(rounds, Round{
+						Name: trans("Semi-Final"),
+					})
+				} else if index == 2 {
+					rounds = append(rounds, Round{
+						Name: trans("Quarter-Final"),
+					})
+				} else if index == 3 {
+					rounds = append(rounds, Round{
+						Name: trans("Eight-Final"),
+					})
+				} else if index == 4 {
+					rounds = append(rounds, Round{
+						Name: trans("16th-Final"),
+					})
+				} else if index == 5 {
+					rounds = append(rounds, Round{
+						Name: trans("32nd-Final"),
+					})
+				}
+			}
+			rounds[index].Games = append(rounds[index].Games, g)
+		}
+	}
+	for i, j := 0, len(rounds)-1; i < j; i, j = i+1, j-1 {
+		rounds[i], rounds[j] = rounds[j], rounds[i]
+	}
+	return rounds, nil
 }
 
 func hasTeam(group tournify.Group, team models.Team) bool {
@@ -668,4 +513,276 @@ func normalizeViewGroups(gs map[int]TournamentViewGroup, normalized map[int]Tour
 	normalized[count] = gs[lowestIndex]
 	delete(gs, lowestIndex)
 	return normalizeViewGroups(gs, normalized, count+1)
+}
+
+func (controller *Controller) createTournament(c *gin.Context, tourType int, name string, visibility int, winPoints string, lossPoints string, tiePoints string, groupCountInt int, meetCountInt int, teams []string, trans func(s string) string) (string, error) {
+	if name == "" {
+		name = "Tournament " + time.Now().Format("2006-01-02 15:04:05")
+	}
+	slugString := slug.Make(name)
+	tournamentModel := models.Tournament{
+		Name:    name,
+		Slug:    controller.createUniqueTournamentSlug(slugString, 0),
+		Type:    tourType,
+		Privacy: visibility,
+	}
+
+	if isAuthenticated(c) {
+		log.Println("authenticated user")
+		userID, exists := c.Get(middleware.UserIDKey)
+
+		if exists {
+			userIDInt, ok := userID.(uint)
+			if ok {
+				userModel := models.User{}
+				userModel.ID = userIDInt
+				res := controller.db.Where(&userModel).First(&userModel)
+				if res.Error != nil {
+					log.Println(res.Error)
+					return slugString, res.Error
+				}
+
+				// Associate the user to the tournament
+				tournamentModel.Users = append(tournamentModel.Users, userModel)
+			}
+		} else {
+			// This should never happen, but we log it so that we might see it if it does happen for some reason
+			log.Println("userID doesn't exist but user is authenticated")
+		}
+	} else if isUnauthenticatedSession(c) {
+		log.Println("unauthenticated session")
+		sessionID, exists := c.Get(middleware.SessionIDKey)
+
+		if exists {
+			sessionIDInt, ok := sessionID.(uint)
+			if ok {
+				sessionModel := models.Session{}
+				sessionModel.ID = sessionIDInt
+				res := controller.db.Where(&sessionModel).First(&sessionModel)
+				if res.Error != nil {
+					log.Println(res.Error)
+					return slugString, res.Error
+				}
+
+				// Associate the user to the tournament
+				tournamentModel.Sessions = append(tournamentModel.Sessions, sessionModel)
+			}
+		} else {
+			// This should never happen, but we log it so that we might see it if it does happen for some reason
+			log.Println("userID doesn't exist but user is authenticated")
+		}
+	} else {
+		log.Println("no session")
+		// Generate a ULID for the current session
+		sessionIdentifier := util.GenerateULID()
+
+		ses := models.Session{
+			Identifier: sessionIdentifier,
+		}
+
+		// Session is valid for 30 days
+		ses.ExpiresAt = time.Now().Add(time.Hour * 24 * 30)
+
+		res := controller.db.Save(&ses)
+		if res.Error != nil {
+			log.Println(res.Error)
+			return slugString, res.Error
+		}
+
+		session := sessions.Default(c)
+		session.Set(middleware.SessionIdentifierKey, sessionIdentifier)
+
+		err := session.Save()
+		if err != nil {
+			log.Println(err)
+			return slugString, err
+		}
+
+		tournamentModel.Sessions = append(tournamentModel.Sessions, ses)
+	}
+
+	res := controller.db.Session(&gorm.Session{FullSaveAssociations: true}).Save(&tournamentModel)
+	if res.Error != nil {
+		return slugString, res.Error
+	}
+
+	winPointsOption := models.TournamentOption{
+		Key:          "win_points",
+		Value:        winPoints,
+		TournamentID: tournamentModel.ID,
+	}
+	res = controller.db.Save(&winPointsOption)
+	if res.Error != nil {
+		return slugString, res.Error
+	}
+	lossPointsOption := models.TournamentOption{
+		Key:          "loss_points",
+		Value:        lossPoints,
+		TournamentID: tournamentModel.ID,
+	}
+	res = controller.db.Save(&lossPointsOption)
+	if res.Error != nil {
+		return slugString, res.Error
+	}
+	tiePointsOption := models.TournamentOption{
+		Key:          "tie_points",
+		Value:        tiePoints,
+		TournamentID: tournamentModel.ID,
+	}
+	res = controller.db.Save(&tiePointsOption)
+	if res.Error != nil {
+		return slugString, res.Error
+	}
+
+	var teamModels []models.Team
+	teamCount := 0
+	for _, team := range teams {
+		teamCount++
+		teamSlug := slug.Make(team)
+		if team == "" {
+			team = fmt.Sprintf("%s %d", trans("Team"), teamCount)
+			teamSlug = slug.Make(team) + "-" + util.RandomString(4)
+		}
+		teamModel := models.Team{
+			Name: team,
+			Slug: controller.createUniqueTeamSlug(teamSlug, 0),
+		}
+		teamModels = append(teamModels, teamModel)
+	}
+
+	res = controller.db.CreateInBatches(teamModels, 100)
+	if res.Error != nil {
+		return slugString, res.Error
+	}
+
+	teamInterfaces := make([]tournify.TeamInterface, len(teams))
+
+	for i := range teams {
+		teamInterfaces[i] = &teamModels[i]
+	}
+
+	if tourType == 0 {
+
+		// The CreateGroupTournamentFromTeams method takes a slice of teams along with the group count and meet count
+		tournament := tournify.CreateGroupTournamentFromTeams(teamInterfaces, groupCountInt, meetCountInt)
+
+		for i, group := range tournament.GetGroups() {
+			groupName := fmt.Sprintf("%s %d", trans("Group"), i+1)
+			groupSlug := slug.Make(groupName) + "-" + util.RandomString(4)
+			groupModel := models.Group{
+				Name:         groupName,
+				Slug:         controller.createUniqueGroupSlug(groupSlug, 0),
+				TournamentID: tournamentModel.ID,
+			}
+			res = controller.db.Save(&groupModel)
+			if res.Error != nil {
+				return slugString, res.Error
+			}
+			if group.GetGames() != nil {
+				for x, game := range *group.GetGames() {
+					var gameTeams []models.Team
+					for _, t := range game.GetTeams() {
+						gameTeams = append(gameTeams, models.Team{
+							Model: gorm.Model{
+								ID: uint(t.GetID()),
+							},
+						})
+					}
+					gameName := fmt.Sprintf("%s %d", trans("Game"), x+1)
+					gameSlug := slug.Make(gameName) + "-" + util.RandomString(4)
+					homeTeamID := uint(game.GetHomeTeam().GetID())
+					awayTeamID := uint(game.GetAwayTeam().GetID())
+					gameModel := models.Game{
+						Name:         gameName,
+						Slug:         controller.createUniqueGameSlug(gameSlug, 0),
+						TournamentID: tournamentModel.ID,
+						HomeTeamID:   &homeTeamID,
+						AwayTeamID:   &awayTeamID,
+						GroupID:      &groupModel.ID,
+						Teams:        gameTeams,
+					}
+					res = controller.db.Save(&gameModel)
+					if res.Error != nil {
+						return slugString, res.Error
+					}
+				}
+			}
+		}
+	} else if tourType == 1 {
+		tournament := tournify.CreateEliminationTournamentFromTeams(teamInterfaces)
+		if tournament.GetGames() != nil {
+			insertedGames := make(map[int]int, len(tournament.GetGames()))
+			for x, game := range tournament.GetGames() {
+				var gameTeams []models.Team
+				for _, t := range game.GetTeams() {
+					if t.GetID() != -1 {
+						gameTeams = append(gameTeams, models.Team{
+							Model: gorm.Model{
+								ID: uint(t.GetID()),
+							},
+						})
+					}
+				}
+				depth := getGameDepth(game, tournament.GetGames())
+				gameID := game.GetID()
+				gameName := fmt.Sprintf("%s %d", trans("Game"), x+1)
+				gameSlug := slug.Make(gameName) + "-" + util.RandomString(4)
+				homeTeamID := uint(game.GetHomeTeam().GetID())
+				awayTeamID := uint(game.GetAwayTeam().GetID())
+				gameModel := models.Game{
+					Name:         gameName,
+					Slug:         controller.createUniqueGameSlug(gameSlug, 0),
+					TournamentID: tournamentModel.ID,
+					Teams:        gameTeams,
+					Depth:        &depth,
+				}
+
+				if int(homeTeamID) != -1 {
+					gameModel.HomeTeamID = &homeTeamID
+				}
+				if int(awayTeamID) != -1 {
+					gameModel.AwayTeamID = &awayTeamID
+				}
+
+				res = controller.db.Save(&gameModel)
+				if res.Error != nil {
+					return slugString, res.Error
+				}
+
+				for _, pID := range game.GetParentIDs() {
+					if gID, ok := insertedGames[pID]; ok {
+						parentGameModel := models.Game{}
+						parentGameModel.ID = uint(gID)
+						res = controller.db.Where(parentGameModel).First(&parentGameModel)
+						if res.Error != nil {
+							return slugString, res.Error
+						}
+						parentGameModel.ChildID = &gameModel.ID
+						res = controller.db.Save(&parentGameModel)
+						if res.Error != nil {
+							return slugString, res.Error
+						}
+					}
+				}
+
+				insertedGames[gameID] = int(gameModel.ID)
+			}
+		}
+	} else {
+		return slugString, errors.New("tournament type is invalid")
+	}
+	return slugString, nil
+}
+
+// getGameDepth gets the depth of the game in a tournament such as an elimination tournament. It is the same as counting how many games each team had to win in order to get to this game (a team which is by itself in a game automatically wins).
+func getGameDepth(game tournify.GameInterface, games []tournify.GameInterface) int {
+	ps := game.GetParentIDs()
+	for _, id := range ps {
+		for gameID, foundGame := range games {
+			if gameID == id {
+				return 1 + getGameDepth(foundGame, games)
+			}
+		}
+	}
+	return 0
 }

@@ -8,6 +8,8 @@
 
         {{ template "messages.html" . }}
 
+        {{ if eq .TournamentType 0 }}
+
         <div id="group-tournament-statistics" class="table-responsive">
             <table class="table table-hover table-sm">
                 {{ range $index, $group := .Groups }}
@@ -45,6 +47,7 @@
 
         <div class="table-responsive">
             <table class="table table-hover table-sm">
+                {{ $tourType := .TournamentType }}
                 {{ $tournamentSlug := .TournamentSlug }}
                 {{ $canEdit := .CanEdit }}
                 {{ range $index, $group := .Groups }}
@@ -61,6 +64,7 @@
                         <th scope="row">
                             {{ $game.Name }}
                             <input type="hidden" value="{{ $game.GetID }}" name="id">
+                            <input type="hidden" value="{{ $tourType }}" name="tourType">
                             <input type="hidden" value="{{ $tournamentSlug }}" name="slug">
                         </th>
                         <td>
@@ -88,6 +92,62 @@
                 </tbody>
                 {{ end }}
             </table>
+
+            {{ end }}
+            {{ if eq .TournamentType 1 }}
+
+            <h2>{{ call $trans "Games" }}</h2>
+
+            <div class="table-responsive">
+                <table class="table table-hover table-sm" id="elimination-games">
+                    {{ $tournamentSlug := .TournamentSlug }}
+                    {{ $tourType := .TournamentType }}
+                    {{ $canEdit := .CanEdit }}
+                    {{ range $index, $group := .Rounds }}
+                    <thead>
+                    <tr>
+                        <th scope="col">{{ $group.Name }}</th>
+                        <th scope="col" colspan="2">{{ call $trans "Home Team" }}</th>
+                        <th scope="col" colspan="2">{{ call $trans "Away Team" }}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {{ range $game := $group.Games }}
+                    <tr>
+                        <th scope="row">
+                            {{ $game.Name }}
+                            <input type="hidden" value="{{ $game.GetID }}" name="id">
+                            <input type="hidden" value="{{ $tourType }}" name="tourType">
+                            <input type="hidden" value="{{ $tournamentSlug }}" name="slug">
+                        </th>
+                        <td>
+                            {{ $game.GetHomeTeamName }}
+                        </td>
+                        <td>
+                            {{ if $canEdit }}
+                            <input class="small-input" type="number" name="home" value="{{ $game.GetHomeScore.GetPoints }}">
+                            {{ else }}
+                            {{ $game.GetHomeScore.GetPoints }}
+                            {{ end }}
+                        </td>
+                        <td>
+                            {{ $game.GetAwayTeamName }}
+                        </td>
+                        <td>
+                            {{ if $canEdit }}
+                            <input class="small-input" type="number" name="away" value="{{ $game.GetAwayScore.GetPoints }}">
+                            {{ else }}
+                            {{ $game.GetAwayScore.GetPoints }}
+                            {{ end }}
+                        </td>
+                    </tr>
+                    {{ end }}
+                    </tbody>
+                    {{ end }}
+                </table>
+
+            {{ end }}
+
         </div>
     </div>
 </main>

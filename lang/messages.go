@@ -341,4 +341,32 @@ var translationMessages = []i18n.Message{
 		ID:    "team",
 		Other: "Team",
 	},
+	{
+		ID:    "404_notice_about_old_website",
+		Other: "We recently created a new website, if you are looking for an old tournament please go to https://old.tournify.io",
+	},
+	{
+		ID:    "final",
+		Other: "Final",
+	},
+	{
+		ID:    "semi_final",
+		Other: "Semi-Final",
+	},
+	{
+		ID:    "quarter_final",
+		Other: "Quarter-Final",
+	},
+	{
+		ID:    "eight_final",
+		Other: "Eight-Final",
+	},
+	{
+		ID:    "16th_final",
+		Other: "16th-Final",
+	},
+	{
+		ID:    "32nd_final",
+		Other: "32nd-Final",
+	},
 }

@@ -94,6 +94,7 @@ func Run() {
 	api.Use(middleware.Sensitive())
 	api.POST("/tournament/:slug/game/:id", controller.APITournamentGameUpdate)
 	api.GET("/tournament/:slug/stats", controller.APITournamentStats)
+	api.GET("/tournament/:slug/games", controller.APITournamentGames)
 
 	r.NoRoute(controller.NoRoute)
 

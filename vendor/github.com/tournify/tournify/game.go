@@ -56,7 +56,9 @@ func (g *Game) GetID() int {
 // GetHomeTeam returns the first team in the Teams slice
 func (g *Game) GetHomeTeam() TeamInterface {
 	if len(g.Teams) < 1 {
-		g.Teams = append(g.Teams, &Team{})
+		g.Teams = append(g.Teams, &Team{
+			ID: -1,
+		})
 	}
 	return g.Teams[0]
 }
@@ -64,7 +66,9 @@ func (g *Game) GetHomeTeam() TeamInterface {
 // SetHomeTeam sets the first team of the game
 func (g *Game) SetHomeTeam(t TeamInterface) {
 	if len(g.Teams) < 1 {
-		g.Teams = append(g.Teams, &Team{})
+		g.Teams = append(g.Teams, &Team{
+			ID: -1,
+		})
 	}
 	g.Teams[0] = t
 }
@@ -72,9 +76,15 @@ func (g *Game) SetHomeTeam(t TeamInterface) {
 // GetAwayTeam returns the second team in the Teams slice
 func (g *Game) GetAwayTeam() TeamInterface {
 	if len(g.Teams) < 1 {
-		g.Teams = append(g.Teams, &Team{}, &Team{})
+		g.Teams = append(g.Teams, &Team{
+			ID: -1,
+		}, &Team{
+			ID: -1,
+		})
 	} else if len(g.Teams) < 2 {
-		g.Teams = append(g.Teams, &Team{})
+		g.Teams = append(g.Teams, &Team{
+			ID: -1,
+		})
 	}
 	return g.Teams[1]
 }
@@ -82,9 +92,15 @@ func (g *Game) GetAwayTeam() TeamInterface {
 // SetAwayTeam sets the second team of the game and adds a placeholder home team if it's not already there
 func (g *Game) SetAwayTeam(t TeamInterface) {
 	if len(g.Teams) < 1 {
-		g.Teams = append(g.Teams, &Team{}, &Team{})
+		g.Teams = append(g.Teams, &Team{
+			ID: -1,
+		}, &Team{
+			ID: -1,
+		})
 	} else if len(g.Teams) < 2 {
-		g.Teams = append(g.Teams, &Team{})
+		g.Teams = append(g.Teams, &Team{
+			ID: -1,
+		})
 	}
 	g.Teams[1] = t
 }
@@ -109,11 +125,27 @@ func (g *Game) GetAwayScore() ScoreInterface {
 
 // GetTeams returns a slice of Team
 func (g *Game) GetTeams() []TeamInterface {
+	if len(g.Teams) < 1 {
+		g.Teams = append(g.Teams, &Team{
+			ID: -1,
+		}, &Team{
+			ID: -1,
+		})
+	} else if len(g.Teams) < 2 {
+		g.Teams = append(g.Teams, &Team{
+			ID: -1,
+		})
+	}
 	return g.Teams
 }
 
 // GetScores returns a slice of Score
 func (g *Game) GetScores() []ScoreInterface {
+	if len(g.Scores) < 1 {
+		g.Scores = append(g.Scores, &Score{}, &Score{})
+	} else if len(g.Scores) < 2 {
+		g.Scores = append(g.Scores, &Score{})
+	}
 	return g.Scores
 }
 
@@ -125,4 +157,50 @@ func (g *Game) Print() string {
 		g.GetAwayTeam().GetID(),
 		g.GetHomeScore().GetPoints(),
 		g.GetAwayScore().GetPoints())
+}
+
+func GetWinnerTeam(g GameInterface) TeamInterface {
+	if g.GetHomeTeam().GetID() == -1 {
+		return g.GetAwayTeam()
+	} else if g.GetAwayTeam().GetID() == -1 {
+		return g.GetHomeTeam()
+	} else if g.GetAwayTeam().GetID() == -1 && g.GetHomeTeam().GetID() == -1 {
+		return nil
+	}
+	if g.GetAwayScore().GetPoints() > g.GetHomeScore().GetPoints() {
+		return g.GetAwayTeam()
+	} else if g.GetHomeScore().GetPoints() > g.GetAwayScore().GetPoints() {
+		return g.GetHomeTeam()
+	}
+	return nil
+}
+
+func GetLoserTeam(g GameInterface) TeamInterface {
+	if winTeam := GetWinnerTeam(g); winTeam != nil {
+		if winTeam.GetID() == g.GetAwayTeam().GetID() {
+			return g.GetHomeTeam()
+		} else {
+			return g.GetAwayTeam()
+		}
+	}
+	return nil
+}
+
+func WinnerChanged(oldGame GameInterface, newGame GameInterface) bool {
+	for _, t := range oldGame.GetTeams() {
+		if t.GetID() == -1 {
+			return true
+		}
+	}
+	for _, t := range newGame.GetTeams() {
+		if t.GetID() == -1 {
+			return true
+		}
+	}
+	oldTeam := GetWinnerTeam(oldGame)
+	newTeam := GetWinnerTeam(newGame)
+	if oldTeam == nil || newTeam == nil {
+		return true
+	}
+	return oldTeam.GetID() != newTeam.GetID()
 }

@@ -13,6 +13,10 @@
     let diffLabel = "{{ call .Trans `Diff` }}"
     let pointsLabel = "{{ call .Trans `Points` }}"
     let teamLabel = "{{ call .Trans `Team` }}"
+    let teamsLabel = "{{ call .Trans `Teams` }}"
+    let homeTeamLabel = "{{ call .Trans `Home Team` }}"
+    let awayTeamLabel = "{{ call .Trans `Away Team` }}"
+    let canEdit = "{{ .CanEdit }}"
 </script>
 <script src="/assets/js/main.js?c={{ .CacheParameter }}"></script>
 {{ template "tracking.html" }}

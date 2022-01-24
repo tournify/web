@@ -21,7 +21,8 @@ type Game struct {
 	GroupID      *uint      `json:"-"`
 	ChildID      *uint      `json:"-"`
 	Parents      []Game     `gorm:"foreignKey:ChildID" json:"-"`
-	Scores       []Score
+	Scores       []Score    `json:"scores"`
+	Depth        *int       `json:"depth,omitempty"`
 }
 
 // GetParentIDs gets the ids of any games that caused this game to be generated, typically this is used in Elimination games
@@ -59,7 +60,12 @@ func (g *Game) GetID() int {
 // GetHomeTeam returns the first team in the Teams slice
 func (g *Game) GetHomeTeam() tournify.TeamInterface {
 	if len(g.Teams) < 1 {
-		g.Teams = append(g.Teams, Team{})
+		gameID := -1
+		g.Teams = append(g.Teams, Team{
+			Model: gorm.Model{
+				ID: uint(gameID),
+			},
+		})
 	}
 	if g.HomeTeamID != nil {
 		for i, t := range g.Teams {
@@ -87,20 +93,49 @@ func (g *Game) GetHomeTeamName() string {
 
 // SetHomeTeam sets the first team of the game
 func (g *Game) SetHomeTeam(t tournify.TeamInterface) {
-	if len(g.Teams) < 1 {
-		g.Teams = append(g.Teams, Team{})
-	}
 	team := t.(*Team)
+	if len(g.Teams) < 1 {
+		g.Teams = append(g.Teams, *team)
+	}
+	if g.HomeTeamID != nil {
+		for i := range g.Teams {
+			if g.Teams[i].GetID() == int(*g.HomeTeamID) {
+				g.Teams[i] = *team
+			}
+		}
+	} else {
+		g.Teams[0] = *team
+	}
 	g.HomeTeamID = &team.ID
-	g.Teams[0] = *team
 }
 
 // GetAwayTeam returns the second team in the Teams slice
 func (g *Game) GetAwayTeam() tournify.TeamInterface {
+	if g.AwayTeamID != nil {
+		for i := range g.Teams {
+			if g.Teams[i].GetID() == int(*g.AwayTeamID) {
+				return &g.Teams[i]
+			}
+		}
+	}
 	if len(g.Teams) < 1 {
-		g.Teams = append(g.Teams, Team{}, Team{})
+		gameID := -1
+		g.Teams = append(g.Teams, Team{
+			Model: gorm.Model{
+				ID: uint(gameID),
+			},
+		}, Team{
+			Model: gorm.Model{
+				ID: uint(gameID),
+			},
+		})
 	} else if len(g.Teams) < 2 {
-		g.Teams = append(g.Teams, Team{})
+		gameID := -1
+		g.Teams = append(g.Teams, Team{
+			Model: gorm.Model{
+				ID: uint(gameID),
+			},
+		})
 	}
 	if g.AwayTeamID != nil {
 		for i, t := range g.Teams {
@@ -128,14 +163,25 @@ func (g *Game) GetAwayTeamName() string {
 
 // SetAwayTeam sets the second team of the game and adds a placeholder home team if it's not already there
 func (g *Game) SetAwayTeam(t tournify.TeamInterface) {
-	if len(g.Teams) < 1 {
-		g.Teams = append(g.Teams, Team{}, Team{})
-	} else if len(g.Teams) < 2 {
-		g.Teams = append(g.Teams, Team{})
-	}
 	team := t.(*Team)
+	if len(g.Teams) < 1 {
+		g.Teams = append(g.Teams, *team)
+	} else if g.AwayTeamID != nil {
+		for i := range g.Teams {
+			if g.Teams[i].GetID() == int(*g.AwayTeamID) {
+				g.Teams[i] = *team
+			}
+		}
+	} else if len(g.Teams) == 1 {
+		if int(g.Teams[0].ID) == -1 {
+			g.Teams[0] = *team
+		} else {
+			g.Teams = append(g.Teams, *team)
+		}
+	} else if len(g.Teams) >= 2 {
+		g.Teams[1] = *team
+	}
 	g.AwayTeamID = &team.ID
-	g.Teams[1] = *team
 }
 
 // GetHomeScore returns the first score in the Scores slice

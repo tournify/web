@@ -18,7 +18,7 @@ require (
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/nicksnyder/go-i18n/v2 v2.1.2
 	github.com/oklog/ulid/v2 v2.0.2
-	github.com/tournify/tournify v0.0.0-20211225200426-b5f43d0621b5
+	github.com/tournify/tournify v0.0.0-20220120002538-45dd5699c15b
 	github.com/ugorji/go v1.2.6 // indirect
 	github.com/ulule/limiter/v3 v3.9.0
 	golang.org/x/crypto v0.0.0-20211215153901-e495a2d5b3d3

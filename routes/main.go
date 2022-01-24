@@ -49,6 +49,7 @@ type PageData struct {
 	CreatedBy         string
 	PrivacyPolicy     string
 	TermsOfService    string
+	CanEdit           bool
 }
 
 type Message struct {

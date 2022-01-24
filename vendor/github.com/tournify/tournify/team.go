@@ -9,13 +9,14 @@ import (
 type TeamInterface interface {
 	GetID() int
 	GetEliminatedCount() int
+	SetEliminatedCount(i int)
 	Print() string
 }
 
 // Team is a default struct used as an example of how structs can be implemented for tournify
 type Team struct {
 	ID         int
-	Eliminated int // Increment by 1 every time this team is elimnated
+	Eliminated int // Increment by 1 every time this team is eliminated
 }
 
 // GetID returns the id of the score
@@ -28,7 +29,12 @@ func (t *Team) Print() string {
 	return fmt.Sprintf("Team ID: %d\n", t.GetID())
 }
 
-// GetEliminatedCount gets the number of times the team has been eliminated in a multiple elimination tournament
+// GetEliminatedCount gets the number of times the team has been eliminated in a knockout tournament
 func (t *Team) GetEliminatedCount() int {
 	return t.Eliminated
+}
+
+// SetEliminatedCount sets the number of times the team has been eliminated in a knockout tournament
+func (t *Team) SetEliminatedCount(i int) {
+	t.Eliminated = i
 }

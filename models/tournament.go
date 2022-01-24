@@ -19,6 +19,7 @@ type Tournament struct {
 	Options     []TournamentOption
 	Users       []User    `gorm:"many2many:tournament_users;" json:"users"`
 	Sessions    []Session `gorm:"many2many:session_tournaments;" json:"sessions"`
+	Games       []Game
 }
 
 type TournamentOption struct {

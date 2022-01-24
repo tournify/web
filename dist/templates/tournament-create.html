@@ -15,7 +15,7 @@
                     <div class="input-group">
                         <select class="form-control" name="tourtype" id="tourtype">
                             <option value="0" SELECTED>{{ call .Trans "Group" }}</option>
-                            <option value="1" disabled>{{ call .Trans "Elimination" }} ({{ call .Trans "coming soon" }})</option>
+                            <option value="1">{{ call .Trans "Elimination" }}</option>
                         </select>
                     </div>
 
@@ -39,11 +39,6 @@
 
                         <div class="input-group spinner">
                             <input type="number" class="form-control" id="meetcount" name="meetcount" value="1">
-                        </div>
-                        <label for="elimcount">{{ call .Trans "How many teams are eliminated from each group?" }}</label>
-
-                        <div class="input-group mb-3 spinner">
-                            <input type="number" class="form-control" id="elimcount" name="elimcount" value="2">
                         </div>
 
                         <span><a class="mb-3" id="advlnk" href="#">{{ call .Trans "Advanced" }}</a></span>
