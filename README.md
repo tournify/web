@@ -1,5 +1,7 @@
 # Tournify
 
+I have archived this repository as I have decided to no longer support this project.
+
 This is the web application for [Tournify.io](https://www.tournify.io) (English) and the corresponding Swedish site [Turnering.io](https://www.turnering.io).
 
 Current features
